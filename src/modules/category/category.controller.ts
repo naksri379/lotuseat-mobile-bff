@@ -29,26 +29,18 @@ import { GetCategoryListResponseDto } from './models/category.response';
 @Controller('category')
 @ApiExtraModels(ResponseSuccess200, GetCategoryListResponseDto)
 export class CategoryController {
+  constructor(private readonly categoryService: CategoryService) {}
 
+  @ApiOperation({ summary: 'category list' })
+  @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
+  @ApiDefaultErrorResponse()
+  @Get('/v1/list')
+  @UseGuards(JwtExtractorGuard)
+  @UsePipes(new JoiValidationPipe(GET_CATEGORY_LIST_REQUEST_SCHEMA))
+  async getCategoryList(
+    @Query() query: GetCategoryListRequestDto
+  ): Promise<GetCategoryListResponseDto[]> {
+    return this.categoryService.getCategoryList(query)
+  }
 
-
-    constructor(private readonly categoryService: CategoryService) {}
-
-    @ApiOperation({ summary: 'category list' })
-    @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
-    @ApiDefaultErrorResponse()
-    @Get('/v1/list')
-    @UseGuards(JwtExtractorGuard)
-    @UsePipes(new JoiValidationPipe(GET_CATEGORY_LIST_REQUEST_SCHEMA))
-    async getCategoryList(
-      @Query() query: GetCategoryListRequestDto
-    ): Promise<GetCategoryListResponseDto[]> {
-      return this.categoryService.getCategoryList(query)
-    }
-
-
-
-
-
-    
 }
