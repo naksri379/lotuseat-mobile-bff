@@ -6,6 +6,7 @@ import { GetCategoryListRequestDto } from './models/category.request'
 import { GetCategoryListResponseDto } from './models/category.response'
 import { mockCategoryListRawData } from '../../tests/mocks/category.service.mock'
 import { CategoryServiceHelper } from './category.service.helper'
+import { CreateCategoryDto } from './models/category.create'
 
 @Injectable()
 export class CategoryService {
@@ -33,5 +34,17 @@ export class CategoryService {
         mockCategoryListRawData
       )
     }
+  }
+
+  async createCategory(
+    createCategory: CreateCategoryDto
+  ): Promise<GetCategoryListResponseDto> {
+    const createModel: GetCategoryListResponseDto ={
+      categoryId: createCategory.categoryId,
+      name: createCategory.name,
+      quanity: createCategory.quanity,
+      price: createCategory.price,
+    }
+    return createModel;
   }
 }
