@@ -1,12 +1,12 @@
 export const mockCategoryListRawData = [
-  { CategoryId: 124412, Name: 'Apple', Quanity: 20, Price: 47.0 },
-  { CategoryId: 123555, Name: 'Orange', Quanity: 11, Price: 45.0 },
-  { CategoryId: 555233, Name: 'Banana', Quanity: 5, Price: 25.0 },
-  { CategoryId: 122354, Name: 'Coconut', Quanity: 50, Price: 35.0 },
-  { CategoryId: 256644, Name: 'Mango', Quanity: 200, Price: 8.5 },
-  { CategoryId: 223134, Name: 'Grape', Quanity: 40, Price: 105.0 },
-  { CategoryId: 266634, Name: 'Pineapple', Quanity: 17, Price: 40.0 },
-  { CategoryId: 111123, Name: 'Strawberry', Quanity: 180, Price: 89.0 },
+  { CategoryID: 124412, Name: 'Apple', Quanity: 20, Price: 47.0 },
+  { CategoryID: 123555, Name: 'Orange', Quanity: 11, Price: 45.0 },
+  { CategoryID: 555233, Name: 'Banana', Quanity: 5, Price: 25.0 },
+  { CategoryID: 122354, Name: 'Coconut', Quanity: 50, Price: 35.0 },
+  { CategoryID: 256644, Name: 'Mango', Quanity: 200, Price: 8.5 },
+  { CategoryID: 223134, Name: 'Grape', Quanity: 40, Price: 105.0 },
+  { CategoryID: 266634, Name: 'Pineapple', Quanity: 17, Price: 40.0 },
+  { CategoryID: 111123, Name: 'Strawberry', Quanity: 180, Price: 89.0 },
 ]
 
 export const mockCategoryListResponse = [
