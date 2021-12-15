@@ -1,0 +1,89 @@
+{
+  "name": "lotusseat-mobile-bff",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "npm run lint && npm run test && npm run prebuild && nest build",
+    "start": "nest start",
+    "dev": "nest start --watch",
+    "start:prod": "sh -ac ' node --max-old-space-size=8192 dist/src/main.js'",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "lint-autofix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest --forceExit --coverage"
+  },
+  "dependencies": {
+    "@golevelup/ts-jest": "^0.3.2",
+    "@nestjs/common": "^7.6.15",
+    "@nestjs/config": "^1.1.0",
+    "@nestjs/core": "^7.6.15",
+    "@nestjs/jwt": "^7.2.0",
+    "@nestjs/passport": "^7.1.3",
+    "@nestjs/platform-express": "^7.6.15",
+    "@nestjs/swagger": "^4.7.4",
+    "@nestjs/throttler": "^2.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "compression": "^1.7.4",
+    "connect-redis": "^5.0.0",
+    "cookie-parser": "^1.4.5",
+    "csurf": "^1.11.0",
+    "dayjs": "^1.9.6",
+    "dotenv": "^8.2.0",
+    "express-http-context": "^1.2.4",
+    "express-session": "^1.17.1",
+    "helmet": "^3.22.0",
+    "joi": "^17.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "redis": "^3.0.2",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "rxjs": "^6.6.6",
+    "swagger-ui-express": "^4.1.4"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^7.6.0",
+    "@nestjs/schematics": "^7.3.0",
+    "@nestjs/testing": "^7.6.15",
+    "@types/compression": "^1.7.2",
+    "@types/express": "^4.17.11",
+    "@types/jest": "^26.0.22",
+    "@types/joi": "^17.2.3",
+    "@types/node": "^14.14.36",
+    "@types/supertest": "^2.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.19.0",
+    "@typescript-eslint/parser": "^4.19.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
+    "supertest": "^6.1.3",
+    "ts-jest": "^26.5.4",
+    "ts-loader": "^8.0.18",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "~4.4.4"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".(spec|test).ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}
