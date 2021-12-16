@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { GetCategoryListResponseDto } from './models/category.response'
+import { GetCategoryListResponseDto, UpdateCategoryResponseDto } from './models/category.response'
 @Injectable()
 export class CategoryServiceHelper {
   mapCategoryListResponse = (
@@ -24,4 +24,5 @@ export class CategoryServiceHelper {
 
     return []
   }
+
 }

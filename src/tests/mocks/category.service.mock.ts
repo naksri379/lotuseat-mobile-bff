@@ -81,3 +81,18 @@ export const mockCategoryListResponse = [
     source: 'wemall',
   },
 ]
+
+export const mockUpdatedCategoryData = {
+  "id": "1a111a1aaaa111a111111111",
+  "projectId": "1a11a11a11a11111111aa111",
+  "name": {
+      "en": "Electronics",
+      "th": "อุปกรณ์อิเล็กทรอนิกส์"
+  },
+  "status": "ACTIVE",
+  "group": "PRODUCT",
+  "externalRef": "wemal_cat_001",
+  "parentExternalRef": "",
+  "batchId": "2020-10-25T10:02:111",
+  "source": "wemall"
+}

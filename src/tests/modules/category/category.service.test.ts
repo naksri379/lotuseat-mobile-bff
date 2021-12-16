@@ -6,14 +6,12 @@ import { AxiosResponse } from 'axios'
 
 import { CategoryService } from '../../../modules/category/category.service'
 import { CategoryServiceHelper } from 'src/modules/category/category.service.helper'
-import {
-  DeleteCategoryRequestDto,
-  GetCategoryListRequestDto,
-} from 'src/modules/category/models/category.request'
-import { GetCategoryListResponseDto } from 'src/modules/category/models/category.response'
+import { DeleteCategoryRequestDto, GetCategoryListRequestDto, UpdateCategoryRequestDto } from 'src/modules/category/models/category.request'
+import { GetCategoryListResponseDto, UpdateCategoryResponseDto } from 'src/modules/category/models/category.response'
 import {
   mockCategoryListRawData,
   mockCategoryListResponse,
+  mockUpdatedCategoryData,
 } from 'src/tests/mocks/category.service.mock'
 import CustomError from 'src/utilities/customError'
 
@@ -121,4 +119,28 @@ describe('For CategoryService', () => {
       }
     })
   })
+  test('when response is not empty then successfully return updated category data', async () => {
+    const result: AxiosResponse = {
+      data: mockUpdatedCategoryData,
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {},
+    }
+    jest.spyOn(httpService, 'put').mockReturnValueOnce(of(result))
+    const actualResult = await categoryService.updateCategory(
+      {
+        id: '1a111a1aaaa111a111111111',
+        nameEn: 'Electronics',
+        nameTh: 'อุปกรณ์อิเล็กทรอนิกส์',
+        status: 'ACTIVE',
+        parentId: '',
+        group: 'PRODUCT'
+      } as UpdateCategoryRequestDto
+    )
+    
+    expect(actualResult).toEqual(mockUpdatedCategoryData)
+  })
+
+  
 })
