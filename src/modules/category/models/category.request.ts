@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { string } from 'joi'
+import { array, string } from 'joi'
 
 /**
  * Example data transfer object with swagger
@@ -26,31 +26,54 @@ export class GetCategoryListRequestDto {
 export class CreateCategoryRequestDto {
 
   @ApiProperty({
-    name: 'categoryId',
-    required: true,
-    type: Number
-  })
-  categoryId: number
-
-  @ApiProperty({
-    name: 'name',
+    name: 'id',
     required: true,
     type: String
   })
-  name: string
+  id: string
 
   @ApiProperty({
-    name: 'quanity',
+    name: 'en',
     required: true,
-    type: Number
+    type: String
   })
-  quanity: string
+  en: string
 
   @ApiProperty({
-    name: 'price',
+    name: 'th',
     required: true,
-    type: Number
+    type: String
   })
-  price: string
+  th: string
+
+  @ApiProperty({
+    name: 'status',
+    required: true,
+    type: String
+  })
+  status: string
+
+  @ApiProperty({
+    name: 'group',
+    required: true,
+    type: String
+  })
+  group: string
  
+}
+
+export class CreateNameCategoryRequestDto {
+  @ApiProperty({
+    name: 'en',
+    required: true,
+    type: String
+  })
+  en: number
+
+  @ApiProperty({
+    name: 'th',
+    required: true,
+    type: String
+  })
+  th: number
 }

@@ -38,16 +38,40 @@ export class CategoryService {
   async createCategory(
     createCategory: CreateCategoryRequestDto
   ): Promise<GetCategoryListResponseDto[]> {
+    const createCategoryModel = {
+      Id: createCategory.id,
+      ProjectId: 'eat',
+      Name: {
+        Th: createCategory.en,
+        En: createCategory.th
+      },
+      Status: createCategory.status,
+      Group: createCategory.group,
+      ExternalRef: 'wemal_cat_001',
+      ParentExternalRef: '',
+      BatchId: '2020-10-25T10:02:111',
+      Source: 'wemall'
+    }
     
-    mockCategoryListRawData.push({
-      CategoryID: createCategory.categoryId, 
-      Name: createCategory.name, 
-      Quanity: +createCategory.quanity, 
-      Price: +createCategory.price
-    })
-    
-    return this.categoryServiceHelper.mapCategoryListResponse(
-      mockCategoryListRawData
+    const payload = await this.httpService
+      .get(
+        // 'https://api.dev.customer.it-lotus.com/lotusseat-mobile-bff/actuator/health',
+        'https://platform.weomni.com/shop/api/projects/eat/category',
+        {
+          data: createCategoryModel, // example send data
+        }
+      )
+      .toPromise()
+
+    mockCategoryListRawData.push(
+      createCategoryModel
     )
+    
+    console.log("🚀 ~ file: category.service.ts ~ line 71 ~ CategoryService ~ payload.status", payload.status)
+    if(payload.status === 201)
+      return this.categoryServiceHelper.mapCategoryListResponse(
+        mockCategoryListRawData
+      )
+    
   }
 }

@@ -8,7 +8,7 @@ import { ResponseSuccess200 } from 'src/domains/responseSuccess.dto';
 import { ApiDefaultErrorResponse, ApiDefaultSuccessResponse } from 'src/middleware/decorator';
 import { JwtExtractorGuard } from 'src/middleware/guards/jwtExtractor.guard';
 import { JoiValidationPipe } from 'src/middleware/pipes/joiValidation.pipe';
-import { GET_CATEGORY_LIST_REQUEST_SCHEMA } from 'src/utilities/schemas/category.schema';
+import { CREATE_CATEGORY_REQUEST_SCHEMA, GET_CATEGORY_LIST_REQUEST_SCHEMA } from 'src/utilities/schemas/category.schema';
 import { CategoryService } from './category.service';
 import { CreateCategoryRequestDto, GetCategoryListRequestDto } from './models/category.request';
 import { GetCategoryListResponseDto } from './models/category.response';
@@ -48,7 +48,7 @@ export class CategoryController {
   @ApiDefaultErrorResponse()
   @Post('/v1/create')
   @UseGuards(JwtExtractorGuard)
-  //@UsePipes(new JoiValidationPipe(GET_CATEGORY_LIST_REQUEST_SCHEMA))
+  @UsePipes(new JoiValidationPipe(CREATE_CATEGORY_REQUEST_SCHEMA))
   async createCategory(
     @Body() post: CreateCategoryRequestDto
   ): Promise<GetCategoryListResponseDto[]> {
