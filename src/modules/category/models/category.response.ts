@@ -5,14 +5,32 @@ import { ApiProperty } from '@nestjs/swagger'
  */
 export class GetCategoryListResponseDto {
   @ApiProperty()
-  categoryId: number
+  id: string
 
   @ApiProperty()
-  name: string
+  projectId: string
 
   @ApiProperty()
-  quanity: number
+  nameTh: string
 
   @ApiProperty()
-  price: number
+  nameEn: string
+
+  @ApiProperty()
+  status: string
+
+  @ApiProperty()
+  group: string
+
+  @ApiProperty()
+  externalRef: string
+
+  @ApiProperty()
+  parentExternalRef: string
+
+  @ApiProperty()
+  batchId: string
+
+  @ApiProperty()
+  source: string
 }
