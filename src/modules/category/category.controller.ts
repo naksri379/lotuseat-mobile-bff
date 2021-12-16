@@ -33,21 +33,20 @@ import {
 import { GetCategoryListResponseDto } from './models/category.response'
 
 @ApiTags('category')
-@ApiHeaders([
-  {
-    name: 'key',
-    description: 'API key for authorization',
-  },
-  {
-    name: 'X-Request-ID',
-    description: 'Correlates HTTP requests between a client and server',
-  },
-])
+// @ApiHeaders([
+//   {
+//     name: 'key',
+//     description: 'API key for authorization',
+//   },
+//   {
+//     name: 'X-Request-ID',
+//     description: 'Correlates HTTP requests between a client and server',
+//   },
+// ])
 @Controller('category')
 @ApiExtraModels(ResponseSuccess200, GetCategoryListResponseDto)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
-
   @ApiOperation({ summary: 'category list' })
   @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
   @ApiDefaultErrorResponse()
@@ -70,5 +69,13 @@ export class CategoryController {
     @Param() query: DeleteCategoryRequestDto
   ): Promise<void> {
     await this.categoryService.deleteCategoryById(query)
+  }
+
+  @ApiOperation({ summary: 'category list' })
+  @ApiDefaultSuccessResponse(200)
+  @Get('/v1/token')
+  @UseGuards(JwtExtractorGuard)
+  async getOmniToken() {
+    return this.categoryService.getToken()
   }
 }
