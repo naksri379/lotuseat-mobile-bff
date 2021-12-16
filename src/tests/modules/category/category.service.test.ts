@@ -6,7 +6,7 @@ import { AxiosResponse } from 'axios'
 
 import { CategoryService } from '../../../modules/category/category.service'
 import { CategoryServiceHelper } from 'src/modules/category/category.service.helper'
-import { GetCategoryListRequestDto } from 'src/modules/category/models/category.request'
+import { CreateCategoryRequestDto, GetCategoryListRequestDto } from 'src/modules/category/models/category.request'
 import { GetCategoryListResponseDto } from 'src/modules/category/models/category.response'
 import {
   mockCategoryListRawData,
@@ -75,5 +75,48 @@ describe('For CategoryService', () => {
       {} as GetCategoryListRequestDto
     )
     expect(actualResult).toEqual([])
+  })
+
+  //------------- create category ----------------
+  test('when create category is successful then return create data in mock data list', async () => {
+
+    let mockCreateCategory = {
+      id: "1a111a1aaaa111a111111111",
+      projectId: "eat",
+      en: "General",
+      th: "ทั่วไป",
+      status: "NoActivate",
+      group: "PRODUCT",
+      externalRef: "wemal_cat_001",
+      parentExternalRef: "",
+      batchId: "2020-10-25T10:02:111",
+      source: "wemal"
+    }
+
+    const actualResult = await categoryService.createCategory(
+      mockCreateCategory
+    )
+    expect(actualResult.pop().id).toEqual(mockCreateCategory.id) 
+  })
+
+  test('when create data is incorrect then return create data in mock data list', async () => {
+
+    let mockCreateCategory = {
+      id: "1a111a1aaaa111a111111111",
+      projectId: "1a11a11a11a11111111aa111",
+      en: "General",
+      th: "ทั่วไป",
+      status: "NoActivate",
+      group: "PRODUCT",
+      externalRef: "wemal_cat_001",
+      parentExternalRef: "",
+      batchId: "2020-10-25T10:02:111",
+      source: "Meow"
+    }
+
+    const actualResult = await categoryService.createCategory(
+      mockCreateCategory
+    )
+    expect(actualResult.pop().id).toEqual(mockCreateCategory.id) 
   })
 })
