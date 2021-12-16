@@ -1,22 +1,41 @@
-import { Body, Controller, Get, Post, Query, UseGuards, UsePipes } from '@nestjs/common';
-import {  
-    ApiExtraModels,
-    ApiHeaders,
-    ApiOperation,
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common'
+import {
+  ApiExtraModels,
+  ApiHeaders,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger'
-import { ResponseSuccess200 } from 'src/domains/responseSuccess.dto';
+import { ResponseSuccess200 } from 'src/domains/responseSuccess.dto'
 import {
   ApiDefaultErrorResponse,
   ApiDefaultSuccessResponse,
 } from 'src/middleware/decorator'
-import { JwtExtractorGuard } from 'src/middleware/guards/jwtExtractor.guard';
-import { JoiValidationPipe } from 'src/middleware/pipes/joiValidation.pipe';
-import { CREATE_CATEGORY_REQUEST_SCHEMA, GET_CATEGORY_LIST_REQUEST_SCHEMA } from 'src/utilities/schemas/category.schema';
-import { CategoryService } from './category.service';
-import { CreateCategoryRequestDto, GetCategoryListRequestDto } from './models/category.request';
-import { GetCategoryListResponseDto } from './models/category.response';
 
+import { JwtExtractorGuard } from 'src/middleware/guards/jwtExtractor.guard'
+import { JoiValidationPipe } from 'src/middleware/pipes/joiValidation.pipe'
+import {
+  DELETE_CATEGORY_BY_ID_REQUEST_SCHEMA,
+  GET_CATEGORY_LIST_REQUEST_SCHEMA,
+  CREATE_CATEGORY_REQUEST_SCHEMA
+} from 'src/utilities/schemas/category.schema'
+import { CategoryService } from './category.service'
+import {
+  DeleteCategoryRequestDto,
+  CreateCategoryRequestDto,
+  GetCategoryListRequestDto,
+} from './models/category.request'
+import { GetCategoryListResponseDto } from './models/category.response'
 
 @ApiTags('category')
 // @ApiHeaders([
@@ -56,5 +75,21 @@ export class CategoryController {
   ): Promise<GetCategoryListResponseDto[]> {
     return this.categoryService.createCategory(post)
   }
+  
+  @ApiOperation({ summary: 'delete category' })
+  @ApiDefaultErrorResponse(404)
+  @Delete('/v1/:id')
+  @HttpCode(204)
+  @UseGuards(JwtExtractorGuard)
+  @UsePipes(new JoiValidationPipe(DELETE_CATEGORY_BY_ID_REQUEST_SCHEMA))
+  async deleteCategory(
+    @Param() query: DeleteCategoryRequestDto
+  ): Promise<void> {
+    await this.categoryService.deleteCategoryById(query)
+  }
 
+  // @ApiOperation({ summary: 'category list' })
+  // @ApiDefaultSuccessResponse(200)
+  // @Get('/v1/token')
+  
 }
