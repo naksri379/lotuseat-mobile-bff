@@ -10,8 +10,7 @@ export class CategoryServiceHelper {
         return {
           id: category.Id,
           projectId: category.ProjectId,
-          nameTh: category.Name?.Th,
-          nameEn: category.Name?.En,
+          name: category.Name,
           status: category.Status,
           group: category.Group,
           externalRef: category.ExternalRef,

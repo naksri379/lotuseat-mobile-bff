@@ -47,8 +47,10 @@ export const mockCategoryListResponse = [
   {
     id: '1a111a1aaaa111a111111111',
     projectId: '1a11a11a11a11111111aa111',
-    nameEn: 'General',
-    nameTh: 'ทั่วไป',
+    name: {
+      en: 'General',
+      th: 'ทั่วไป',
+    },
     status: 'ACTIVE',
     group: 'PRODUCT',
     externalRef: 'wemal_cat_001',
@@ -59,8 +61,10 @@ export const mockCategoryListResponse = [
   {
     id: '2b222b2bbbb222b222222222',
     projectId: '1a11a11a11a11111111aa111',
-    nameEn: 'Art',
-    nameTh: 'งานศิลป์',
+    name: {
+      en: 'Art',
+      th: 'งานศิลป์',
+    },
     status: 'ACTIVE',
     group: 'PRODUCT',
     externalRef: 'wemal_cat_002',
@@ -71,8 +75,10 @@ export const mockCategoryListResponse = [
   {
     id: '3c333c3cccc333c33333333',
     projectId: '1a11a11a11a11111111aa111',
-    nameEn: 'Electronics',
-    nameTh: 'อุปกรณ์อิเล็กทรอนิกส์',
+    name: {
+      en: 'Electronics',
+      th: 'อุปกรณ์อิเล็กทรอนิกส์',
+    },
     status: 'ACTIVE',
     group: 'PRODUCT',
     externalRef: 'wemal_cat_003',

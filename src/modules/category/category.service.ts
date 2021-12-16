@@ -2,6 +2,7 @@ import { HttpService, Injectable } from '@nestjs/common'
 import { ExecuteTimeLog } from '../../middleware/decorator/executeTimeLog.decorator'
 import {
   CreateCategoryRequestDto,
+  GetCategoryByIdRequestDto,
   DeleteCategoryRequestDto,
   GetCategoryListRequestDto,
 } from './models/category.request'
@@ -14,7 +15,6 @@ import CustomError from 'src/utilities/customError'
 
 @Injectable()
 export class CategoryService {
-
   constructor(
     private readonly httpService: HttpService,
     private readonly categoryServiceHelper: CategoryServiceHelper
@@ -24,24 +24,78 @@ export class CategoryService {
   async getCategoryList(
     getCategoryListRequest: GetCategoryListRequestDto
   ): Promise<GetCategoryListResponseDto[]> {
-    
+    try {
+      const token = await this.getToken()
+
+      const payload = await this.httpService
+        .get(`https://platform.weomni.com/shop/api/projects/eat/categories`, {
+          headers: {
+            Accept: '*/*',
+            'Accept-Encoding': 'gzip, deflate, br',
+            Authorization: `Bearer ${token}`,
+            Cookie:
+              'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
+          },
+        })
+        .toPromise()
+
+      if (payload.status === 200) {
+        return payload.data
+      }
+    } catch (exception) {
+      const { response } = exception
+
+      if (!response) {
+        throw CustomError.dependencyError(exception)
+      }
+
+      const error = response.data
+
+      switch (error?.status) {
+        case 404:
+          throw CustomError.notFound(error.detail)
+
+        default:
+          throw CustomError.internalServerError(
+            error.detail || error.error || error
+          )
+      }
+    }
+  }
+
+  @ExecuteTimeLog()
+  async getCategoryById(
+    getCategoryByIdRequest: GetCategoryByIdRequestDto
+  ): Promise<GetCategoryListResponseDto> {
     const payload = await this.httpService
       .get(
         // 'https://api.dev.customer.it-lotus.com/lotusseat-mobile-bff/actuator/health',
         'https://google.com',
         {
-          data: getCategoryListRequest, // example send data
+          // data: getCategoryByIdRequest, // example send data
         }
       )
       .toPromise()
 
     if (payload.status === 200) {
-      return this.categoryServiceHelper.mapCategoryListResponse(
-        mockCategoryListRawData
+      const mapCategoryList =
+        this.categoryServiceHelper.mapCategoryListResponse(
+          mockCategoryListRawData
+        )
+
+      const result = mapCategoryList.find(
+        (category) =>
+          category.id.toString() === getCategoryByIdRequest.id.toString()
       )
+
+      if (!result) {
+        throw CustomError.notFound(`Category not found.`)
+      }
+
+      return result
     }
   }
-
+  
   async getToken() {
     const requestBody = {
       grant_type: 'client_credentials',
