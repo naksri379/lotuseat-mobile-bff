@@ -38,14 +38,13 @@ export class CategoryService {
   async createCategory(
     createCategory: CreateCategoryRequestDto
   ): Promise<GetCategoryListResponseDto[]> {
-    console.log('test=> ', mockCategoryListRawData)
+    
     mockCategoryListRawData.push({
       CategoryID: createCategory.categoryId, 
       Name: createCategory.name, 
       Quanity: +createCategory.quanity, 
       Price: +createCategory.price
     })
-    console.log("🚀 ~ file: category.service.ts ~ line 48 ~ CategoryService ~ mockCategoryListRawData", mockCategoryListRawData)
     
     return this.categoryServiceHelper.mapCategoryListResponse(
       mockCategoryListRawData
