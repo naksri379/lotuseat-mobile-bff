@@ -72,7 +72,7 @@ export class CategoryController {
   ): Promise<GetCategoryListResponseDto> {
     return this.categoryService.getCategoryById(query)
   }
-  
+
   @ApiOperation({ summary: 'delete category' })
   @ApiDefaultErrorResponse(404)
   @Delete('/v1/:id')
