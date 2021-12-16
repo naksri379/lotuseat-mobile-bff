@@ -37,7 +37,7 @@ import {
   CreateCategoryRequestDto,
   GetCategoryListRequestDto,
 } from './models/category.request'
-import { GetCategoryListResponseDto } from './models/category.response'
+import { CreateCategoryResponseDto, GetCategoryListResponseDto } from './models/category.response'
 
 @ApiTags('category')
 // @ApiHeaders([
@@ -74,7 +74,7 @@ export class CategoryController {
   @UsePipes(new JoiValidationPipe(CREATE_CATEGORY_REQUEST_SCHEMA))
   async createCategory(
     @Body() post: CreateCategoryRequestDto
-  ): Promise<GetCategoryListResponseDto[]> {
+  ): Promise<CreateCategoryResponseDto[]> {
     return this.categoryService.createCategory(post)
   }
   

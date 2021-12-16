@@ -62,21 +62,6 @@ export class CreateCategoryRequestDto {
  
 }
 
-export class CreateNameCategoryRequestDto {
-  @ApiProperty({
-    name: 'en',
-    required: true,
-    type: String
-  })
-  en: number
-
-  @ApiProperty({
-    name: 'th',
-    required: true,
-    type: String
-  })
-  th: number
-}
 export class GetCategoryByIdRequestDto {
   @ApiProperty({
     name: 'id',

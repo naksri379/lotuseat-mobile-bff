@@ -39,3 +39,22 @@ export class GetCategoryListResponseDto {
   @ApiProperty()
   source: string
 }
+
+export class CreateCategoryResponseDto {
+
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  nameEn: string
+
+  @ApiProperty()
+  nameTh: string
+
+  @ApiProperty()
+  status: string
+
+  @ApiProperty()
+  group: string
+ 
+}
