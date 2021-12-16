@@ -6,12 +6,16 @@ import { AxiosResponse } from 'axios'
 
 import { CategoryService } from '../../../modules/category/category.service'
 import { CategoryServiceHelper } from 'src/modules/category/category.service.helper'
-import { GetCategoryListRequestDto } from 'src/modules/category/models/category.request'
+import {
+  GetCategoryByIdRequestDto,
+  GetCategoryListRequestDto,
+} from 'src/modules/category/models/category.request'
 import { GetCategoryListResponseDto } from 'src/modules/category/models/category.response'
 import {
   mockCategoryListRawData,
   mockCategoryListResponse,
 } from 'src/tests/mocks/category.service.mock'
+import CustomError from 'src/utilities/customError'
 
 jest.mock('src/utilities/logger')
 
@@ -75,5 +79,52 @@ describe('For CategoryService', () => {
       {} as GetCategoryListRequestDto
     )
     expect(actualResult).toEqual([])
+  })
+
+  describe('For getCategoryById method', () => {
+    test('when request id is match then return data', async () => {
+      const expectedResult: GetCategoryListResponseDto =
+        mockCategoryListResponse[0]
+      const result: AxiosResponse = {
+        data: mockCategoryListResponse,
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: {},
+      }
+      jest.spyOn(httpService, 'get').mockReturnValueOnce(of(result))
+      jest
+        .spyOn(categoryServiceHelper, 'mapCategoryListResponse')
+        .mockReturnValueOnce(mockCategoryListResponse)
+
+      const actualResult = await categoryService.getCategoryById({
+        id: expectedResult.id,
+      } as GetCategoryByIdRequestDto)
+
+      expect(actualResult).toEqual(expectedResult)
+    })
+
+    test('when request id is not match then throw 404', async () => {
+      const result: AxiosResponse = {
+        data: mockCategoryListResponse,
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: {},
+      }
+      jest.spyOn(httpService, 'get').mockReturnValueOnce(of(result))
+      jest
+        .spyOn(categoryServiceHelper, 'mapCategoryListResponse')
+        .mockReturnValueOnce(mockCategoryListResponse)
+
+      try {
+        await categoryService.getCategoryById({
+          id: '0',
+        } as GetCategoryByIdRequestDto)
+      } catch (exception) {
+        expect(exception).toBeInstanceOf(CustomError)
+        expect(exception).toHaveProperty('statusCode', 404)
+      }
+    })
   })
 })

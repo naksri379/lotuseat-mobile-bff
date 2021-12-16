@@ -21,3 +21,13 @@ export class GetCategoryListRequestDto {
   })
   limit: number
 }
+
+export class GetCategoryByIdRequestDto {
+  @ApiProperty({
+    name: 'id',
+    required: true,
+    type: String,
+    description: 'The Id of item',
+  })
+  id: string
+}
