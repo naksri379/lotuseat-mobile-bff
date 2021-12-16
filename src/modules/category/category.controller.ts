@@ -66,7 +66,7 @@ export class CategoryController {
     return this.categoryService.getCategoryList(query)
   }
 
-  @ApiOperation({ summary: 'category' })
+  @ApiOperation({ summary: 'create category' })
   @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
   @ApiDefaultErrorResponse()
   @Post('/v1/create')

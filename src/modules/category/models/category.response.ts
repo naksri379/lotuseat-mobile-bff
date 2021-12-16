@@ -46,10 +46,7 @@ export class CreateCategoryResponseDto {
   id: string
 
   @ApiProperty()
-  nameEn: string
-
-  @ApiProperty()
-  nameTh: string
+  name: Object
 
   @ApiProperty()
   status: string
@@ -57,4 +54,15 @@ export class CreateCategoryResponseDto {
   @ApiProperty()
   group: string
  
+  @ApiProperty()
+  externalRef: string
+
+  @ApiProperty()
+  parentExternalRef: string
+
+  @ApiProperty()
+  batchId: string
+
+  @ApiProperty()
+  source: string
 }
