@@ -6,7 +6,7 @@ import {
   DeleteCategoryRequestDto,
   GetCategoryListRequestDto,
 } from './models/category.request'
-import { GetCategoryListResponseDto } from './models/category.response'
+import { CreateCategoryResponseDto, GetCategoryListResponseDto } from './models/category.response'
 import { mockCategoryListRawData } from '../../tests/mocks/category.service.mock'
 import { CategoryServiceHelper } from './category.service.helper'
 
@@ -120,13 +120,13 @@ export class CategoryService {
    @ExecuteTimeLog()
    async createCategory(
     createCategory: CreateCategoryRequestDto
-  ): Promise<GetCategoryListResponseDto[]> {
-    const createCategoryModel = {
-      Id: createCategory.id,
-      ProjectId: 'eat',
-      Name: {
-        Th: createCategory.en,
-        En: createCategory.th
+  ): Promise<CreateCategoryResponseDto[]> {
+    const createCategoryModel: CreateCategoryResponseDto = {
+      id: createCategory.id,
+      projectId: 'eat',
+      name: {
+        th: createCategory.en,
+        en: createCategory.th
       },
       Status: createCategory.status,
       Group: createCategory.group,
@@ -141,7 +141,8 @@ export class CategoryService {
         'https://platform.weomni.com/shop/api/projects/eat/category',
         {
           headers: {
-            'Cookie' : 'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
+            'Accept': '*/*',
+            'Cookie': 'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
             'Content-Type': 'application/json', 
             'Authorization': `Bearer ${token}`,
             'Accept-Encoding': 'gzip, deflate, br',
@@ -151,16 +152,9 @@ export class CategoryService {
       )
       .toPromise()
 
-    mockCategoryListRawData.push(
-      createCategoryModel
-    )
     
-    console.log("🚀 ~ file: category.service.ts ~ line 71 ~ CategoryService ~ payload.status", payload.status)
     if(payload.status === 201)
-      return this.categoryServiceHelper.mapCategoryListResponse(
-        mockCategoryListRawData
-      )
-    
+      return payload.data
   }
 
   @ExecuteTimeLog()
