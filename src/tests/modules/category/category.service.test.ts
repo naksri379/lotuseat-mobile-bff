@@ -6,12 +6,16 @@ import { AxiosResponse } from 'axios'
 
 import { CategoryService } from '../../../modules/category/category.service'
 import { CategoryServiceHelper } from 'src/modules/category/category.service.helper'
-import { GetCategoryListRequestDto } from 'src/modules/category/models/category.request'
+import {
+  DeleteCategoryRequestDto,
+  GetCategoryListRequestDto,
+} from 'src/modules/category/models/category.request'
 import { GetCategoryListResponseDto } from 'src/modules/category/models/category.response'
 import {
   mockCategoryListRawData,
   mockCategoryListResponse,
 } from 'src/tests/mocks/category.service.mock'
+import CustomError from 'src/utilities/customError'
 
 jest.mock('src/utilities/logger')
 
@@ -75,5 +79,46 @@ describe('For CategoryService', () => {
       {} as GetCategoryListRequestDto
     )
     expect(actualResult).toEqual([])
+  })
+
+  describe('For deleteCategoryById method', () => {
+    test('when request id is match then finish without throw', async () => {
+      const expectedResult: GetCategoryListResponseDto =
+        mockCategoryListResponse[0]
+      const result: AxiosResponse = {
+        data: null,
+        status: 204,
+        statusText: 'No Content',
+        headers: {},
+        config: {},
+      }
+      jest.spyOn(httpService, 'delete').mockReturnValueOnce(of(result))
+
+      await expect(
+        categoryService.deleteCategoryById({
+          id: expectedResult.id,
+        } as DeleteCategoryRequestDto)
+      ).resolves.not.toThrow()
+    })
+
+    test('when request id is not match then throw error 404', async () => {
+      const result: AxiosResponse = {
+        data: mockCategoryListResponse,
+        status: 404,
+        statusText: 'NOT FOUND',
+        headers: {},
+        config: {},
+      }
+      jest.spyOn(httpService, 'delete').mockReturnValueOnce(of(result))
+
+      try {
+        await categoryService.deleteCategoryById({
+          id: '0',
+        } as DeleteCategoryRequestDto)
+      } catch (exception) {
+        expect(exception).toBeInstanceOf(CustomError)
+        expect(exception).toHaveProperty('statusCode', 404)
+      }
+    })
   })
 })
