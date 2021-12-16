@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards, UsePipes } from '@nestjs/common';
 import {  
     ApiExtraModels,
     ApiHeaders,
@@ -10,7 +10,7 @@ import { JwtExtractorGuard } from 'src/middleware/guards/jwtExtractor.guard';
 import { JoiValidationPipe } from 'src/middleware/pipes/joiValidation.pipe';
 import { GET_CATEGORY_LIST_REQUEST_SCHEMA } from 'src/utilities/schemas/category.schema';
 import { CategoryService } from './category.service';
-import { GetCategoryListRequestDto } from './models/category.request';
+import { CreateCategoryRequestDto, GetCategoryListRequestDto } from './models/category.request';
 import { GetCategoryListResponseDto } from './models/category.response';
 
 
@@ -41,6 +41,18 @@ export class CategoryController {
     @Query() query: GetCategoryListRequestDto
   ): Promise<GetCategoryListResponseDto[]> {
     return this.categoryService.getCategoryList(query)
+  }
+
+  @ApiOperation({ summary: 'category' })
+  @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
+  @ApiDefaultErrorResponse()
+  @Post('/v1/create')
+  @UseGuards(JwtExtractorGuard)
+  //@UsePipes(new JoiValidationPipe(GET_CATEGORY_LIST_REQUEST_SCHEMA))
+  async createCategory(
+    @Body() post: CreateCategoryRequestDto
+  ): Promise<GetCategoryListResponseDto[]> {
+    return this.categoryService.createCategory(post)
   }
 
 }
