@@ -27,6 +27,15 @@ export class GetCategoryByIdRequestDto {
     name: 'id',
     required: true,
     type: String,
+    description: 'The Id of category',
+  })
+  id: string
+}
+export class DeleteCategoryRequestDto {
+  @ApiProperty({
+    name: 'id',
+    required: true,
+    type: String,
     description: 'The Id of item',
   })
   id: string
