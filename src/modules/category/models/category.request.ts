@@ -26,11 +26,11 @@ export class GetCategoryListRequestDto {
 export class CreateCategoryRequestDto {
 
   @ApiProperty({
-    name: 'id',
+    name: 'parentId',
     required: true,
     type: String
   })
-  id: string
+  parentId: string
 
   @ApiProperty({
     name: 'en',

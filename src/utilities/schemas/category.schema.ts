@@ -37,35 +37,25 @@ export const DELETE_CATEGORY_BY_ID_REQUEST_SCHEMA = Joi.object({
 }).unknown(true)
 
 export const CREATE_CATEGORY_REQUEST_SCHEMA = Joi.object({
-  id: Joi.string()
-    .required()
-    .messages({
-      'any.required': `{#key} ${IS_REQUIRED}`,
-      'number.base': `{#key} ${IS_NOT_A_STRING}`,
-    }),
   en: Joi.string()
     .required()
     .messages({
-      'any.required': `{#key} ${IS_REQUIRED}`,
-      'number.base': `{#key} ${IS_NOT_A_STRING}`,
+      'any.required': `{#key} ${IS_REQUIRED}`
     }),
   th: Joi.string()
     .required()
     .messages({
-      'any.required': `{#key} ${IS_REQUIRED}`,
-      'number.base': `{#key} ${IS_NOT_A_STRING}`,
+      'any.required': `{#key} ${IS_REQUIRED}`
     }),
   status: Joi.string()
     .required()
     .messages({
-      'any.required': `{#key} ${IS_REQUIRED}`,
-      'number.base': `{#key} ${IS_NOT_A_STRING}`,
+      'any.required': `{#key} ${IS_REQUIRED}`
   }),
   group: Joi.string()
     .required()
     .messages({
-      'any.required': `{#key} ${IS_REQUIRED}`,
-      'number.base': `{#key} ${IS_NOT_A_STRING}`,
+      'any.required': `{#key} ${IS_REQUIRED}`
   })
     
 }).unknown(true)

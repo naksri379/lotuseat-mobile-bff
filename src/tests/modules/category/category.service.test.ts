@@ -84,46 +84,38 @@ describe('For CategoryService', () => {
   })
 
   //------------- create category ----------------
-  test('when create category is successful then return create data in mock data list', async () => {
+  describe('creat category method', () => {
+    test('when create category is successful then return create data in mock data list', async () => {
+      let mockCreateCategory: CreateCategoryRequestDto = {
+        parentId: "11111",
+        en: "General",
+        th: "ทั่วไป",
+        status: "ACTIVE",
+        group: "PRODUCT"
+      }
+      const result: AxiosResponse = {
+        data: mockCreateCategory,
+        status: 201,
+        statusText: 'CREATED',
+        headers: {},
+        config: {},
+      }
 
-    let mockCreateCategory = {
-      id: "1a111a1aaaa111a111111111",
-      projectId: "eat",
-      en: "General",
-      th: "ทั่วไป",
-      status: "NoActivate",
-      group: "PRODUCT",
-      externalRef: "wemal_cat_001",
-      parentExternalRef: "",
-      batchId: "2020-10-25T10:02:111",
-      source: "wemal"
-    }
 
-    const actualResult = await categoryService.createCategory(
-      mockCreateCategory
-    )
-    expect(actualResult.pop().id).toEqual(mockCreateCategory.id) 
+      jest.spyOn(httpService, 'post').mockReturnValueOnce(of(result))
+      // jest
+      // .spyOn(categoryServiceHelper, 'mapCategoryListResponse')
+      // .mockReturnValueOnce(mockCategoryListResponse)
+
+      const actualResult = await categoryService.createCategory(
+        mockCreateCategory
+      )
+      expect(actualResult).toEqual(mockCreateCategory) 
+    })
+
   })
 
-  test('when create data is incorrect then return create data in mock data list', async () => {
-
-    let mockCreateCategory = {
-      id: "1a111a1aaaa111a111111111",
-      projectId: "1a11a11a11a11111111aa111",
-      en: "General",
-      th: "ทั่วไป",
-      status: "NoActivate",
-      group: "PRODUCT",
-      externalRef: "wemal_cat_001",
-      parentExternalRef: "",
-      batchId: "2020-10-25T10:02:111",
-      source: "Meow"
-    }
-
-    const actualResult = await categoryService.createCategory(
-      mockCreateCategory
-    )
-    expect(actualResult.pop().id).toEqual(mockCreateCategory.id) 
+  
   describe('For getCategoryById method', () => {
     test('when request id is match then return data', async () => {
       const expectedResult: GetCategoryListResponseDto =
@@ -209,7 +201,6 @@ describe('For CategoryService', () => {
         expect(exception).toBeInstanceOf(CustomError)
         expect(exception).toHaveProperty('statusCode', 404)
       }
-    })
     })
   })
 })
