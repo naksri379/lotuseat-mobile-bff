@@ -8,11 +8,12 @@ import { GetCategoryListResponseDto } from './models/category.response'
 import { mockCategoryListRawData } from '../../tests/mocks/category.service.mock'
 import { CategoryServiceHelper } from './category.service.helper'
 
-import qs from 'querystring'
+const qs = require('querystring')
 import CustomError from 'src/utilities/customError'
 
 @Injectable()
 export class CategoryService {
+
   constructor(
     private readonly httpService: HttpService,
     private readonly categoryServiceHelper: CategoryServiceHelper
@@ -65,7 +66,7 @@ export class CategoryService {
     deleteCategoryRequest: DeleteCategoryRequestDto
   ): Promise<void> {
     try {
-      const token = this.getToken()
+      const token = await this.getToken()
 
       await this.httpService
         .delete(
@@ -75,6 +76,8 @@ export class CategoryService {
               Accept: '*/*',
               'Accept-Encoding': 'gzip, deflate, br',
               Authorization: `Bearer ${token}`,
+              Cookie:
+                'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
             },
           }
         )
