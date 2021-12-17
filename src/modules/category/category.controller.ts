@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -88,7 +89,7 @@ export class CategoryController {
   @UseGuards(JwtExtractorGuard)
   @UsePipes(new JoiValidationPipe(UPDATE_CATEGORY_REQUEST_SCHEMA))
   async updateCategoryList(
-    @Query() query: UpdateCategoryRequestDto
+    @Body() query: UpdateCategoryRequestDto
   ): Promise<UpdateCategoryResponseDto> {
     return this.categoryService.updateCategory(query)
   }
