@@ -41,17 +41,52 @@ export class GetCategoryListResponseDto {
 }
 
 export class CreateCategoryResponseDto {
-
   @ApiProperty()
   parentId: string
 
   @ApiProperty()
-  name: Object
+  name: SupportLanguage
 
   @ApiProperty()
   status: string
 
   @ApiProperty()
   group: string
- 
+}
+
+export class UpdateCategoryResponseDto {
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  projectId: string
+
+  @ApiProperty()
+  name: SupportLanguage
+
+  @ApiProperty()
+  status: string
+
+  @ApiProperty()
+  group: string
+
+  @ApiProperty()
+  parentId?: string
+
+  @ApiProperty()
+  externalRef?: string
+
+  @ApiProperty()
+  parentExternalRef?: string
+
+  @ApiProperty()
+  batchId?: string
+
+  @ApiProperty()
+  source?: string
+}
+
+export class NameOfCategory {
+  en: string
+  th: string
 }

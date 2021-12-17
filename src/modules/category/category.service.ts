@@ -5,10 +5,12 @@ import {
   GetCategoryByIdRequestDto,
   DeleteCategoryRequestDto,
   GetCategoryListRequestDto,
+  UpdateCategoryRequestDto,
 } from './models/category.request'
 import {
   CreateCategoryResponseDto,
   GetCategoryListResponseDto,
+  UpdateCategoryResponseDto,
 } from './models/category.response'
 import { CategoryServiceHelper } from './category.service.helper'
 
@@ -124,11 +126,11 @@ export class CategoryService {
         'Accept-Encoding': 'gzip, deflate, br',
       },
     }
-    const url = 'https://platform.weomni.com/uaa/oauth/token'
+
     const payload = await this.httpService
-      .post(url, qs.stringify(requestBody), config)
+      .post(process.env.WEOMNI_URL_TOKEN, qs.stringify(requestBody), config)
       .toPromise()
-    
+
     return payload.data.access_token
   }
 
@@ -140,16 +142,14 @@ export class CategoryService {
       parentId: createCategory.parentId,
       name: {
         th: createCategory.en,
-        en: createCategory.th
+        en: createCategory.th,
       },
       status: createCategory.status,
-      group: createCategory.group
+      group: createCategory.group,
     }
 
     try {
-      var token
-      if (createCategory.parentId != '11111')
-        token = await this.getToken()
+      const token = await this.getToken()
 
       const payload = await this.httpService
         .post(
@@ -161,15 +161,14 @@ export class CategoryService {
               'Accept-Encoding': 'gzip, deflate, br',
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
-              Cookie: 'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
-            }
+              Cookie:
+                'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
+            },
           }
         )
         .toPromise()
 
-      if (payload.status === 201)
-        return payload.data
-
+      if (payload.status === 201) return payload.data
     } catch (exception) {
       const { response } = exception
 
@@ -183,7 +182,6 @@ export class CategoryService {
         throw CustomError.internalServerError(
           error.detail || error.error || error
         )
-
     }
   }
 
@@ -229,4 +227,85 @@ export class CategoryService {
     }
   }
 
+  @ExecuteTimeLog()
+  async updateCategory(
+    updateCategoryRequest: UpdateCategoryRequestDto
+  ): Promise<UpdateCategoryResponseDto> {
+    try {
+      const updatedCategory: UpdateCategoryResponseDto = {
+        id: updateCategoryRequest.id,
+        projectId: 'eat',
+        name: {
+          en: updateCategoryRequest.nameEn,
+          th: updateCategoryRequest.nameTh,
+        },
+        status: updateCategoryRequest.status,
+        group: updateCategoryRequest.group,
+        parentId: updateCategoryRequest.parentId,
+      }
+      // To do: put this data
+      const token = await this.getToken()
+
+      const allCategories = await this.httpService
+        .get('https://platform.weomni.com/shop/api/projects/eat/categories', {
+          headers: {
+            Accept: '*/*',
+            'Accept-Encoding': 'gzip, deflate, br',
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Cookie:
+              'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
+          },
+        })
+        .toPromise()
+
+      const category = allCategories.data.find(
+        (cate) => cate.id === updateCategoryRequest.id
+      )
+
+      if (category) {
+        const payload = await this.httpService
+          .put(
+            'https://platform.weomni.com/shop/api/projects/eat/categories',
+            updatedCategory,
+            {
+              headers: {
+                Accept: '*/*',
+                'Accept-Encoding': 'gzip, deflate, br',
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                Cookie:
+                  'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
+              },
+            }
+          )
+          .toPromise()
+
+        if (payload && payload.status === 200) return updatedCategory
+        else throw CustomError.notFound(`Update category failed`)
+      } else {
+        throw CustomError.notFound(
+          `The id ${updateCategoryRequest.id} is not found in the category`
+        )
+      }
+    } catch (exception) {
+      const { response } = exception
+
+      if (!response) {
+        throw CustomError.dependencyError(exception)
+      }
+
+      const error = response.data
+
+      switch (error?.status) {
+        case 404:
+          throw CustomError.notFound(error.detail)
+
+        default:
+          throw CustomError.internalServerError(
+            error.detail || error.error || error
+          )
+      }
+    }
+  }
 }

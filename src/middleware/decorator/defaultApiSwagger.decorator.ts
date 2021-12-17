@@ -15,8 +15,9 @@ import {
   ResponseError500InternalServerError,
 } from 'src/domains/responseError.dto'
 import { ErrorStatus } from 'src/enums/httpStatus.enum'
-const apiDecorators = []
+let apiDecorators = []
 export function ApiDefaultErrorResponse(...status: number[]) {
+  apiDecorators = []
   if (!status.length) {
     status = [400, 401, 403, 404, 405, 406, 415, 500]
   }
@@ -105,6 +106,7 @@ export function ApiDefaultSuccessResponse(
   object?: any,
   defaultType = 'object'
 ) {
+  apiDecorators = []
   let data: any =
     defaultType === 'object' ? { type: 'object' } : { type: 'array' }
   if (object) {

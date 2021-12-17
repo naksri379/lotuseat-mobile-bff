@@ -6,6 +6,7 @@ import {
   HttpCode,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
   UsePipes,
@@ -28,7 +29,8 @@ import {
   GET_CATEGORY_BY_ID_REQUEST_SCHEMA,
   DELETE_CATEGORY_BY_ID_REQUEST_SCHEMA,
   GET_CATEGORY_LIST_REQUEST_SCHEMA,
-  CREATE_CATEGORY_REQUEST_SCHEMA
+  CREATE_CATEGORY_REQUEST_SCHEMA,
+  UPDATE_CATEGORY_REQUEST_SCHEMA,
 } from 'src/utilities/schemas/category.schema'
 import { CategoryService } from './category.service'
 import {
@@ -36,8 +38,13 @@ import {
   DeleteCategoryRequestDto,
   CreateCategoryRequestDto,
   GetCategoryListRequestDto,
+  UpdateCategoryRequestDto,
 } from './models/category.request'
-import { CreateCategoryResponseDto, GetCategoryListResponseDto } from './models/category.response'
+import {
+  CreateCategoryResponseDto,
+  GetCategoryListResponseDto,
+  UpdateCategoryResponseDto,
+} from './models/category.response'
 
 @ApiTags('category')
 // @ApiHeaders([
@@ -77,7 +84,7 @@ export class CategoryController {
   ): Promise<CreateCategoryResponseDto[]> {
     return this.categoryService.createCategory(post)
   }
-  
+
   @ApiOperation({ summary: 'find category by Id' })
   @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
   @ApiDefaultErrorResponse(404)
@@ -102,8 +109,22 @@ export class CategoryController {
     await this.categoryService.deleteCategoryById(query)
   }
 
-  // @ApiOperation({ summary: 'category list' })
-  // @ApiDefaultSuccessResponse(200)
-  // @Get('/v1/token')
-  
+  @ApiOperation({ summary: 'get token' })
+  @Get('/v1/token')
+  @UseGuards(JwtExtractorGuard)
+  async getOmniToken() {
+    return this.categoryService.getToken()
+  }
+
+  @ApiOperation({ summary: 'update category' })
+  @ApiDefaultSuccessResponse(200, UpdateCategoryResponseDto)
+  @ApiDefaultErrorResponse(404)
+  @Put('/v1/update')
+  @UseGuards(JwtExtractorGuard)
+  @UsePipes(new JoiValidationPipe(UPDATE_CATEGORY_REQUEST_SCHEMA))
+  async updateCategoryList(
+    @Body() query: UpdateCategoryRequestDto
+  ): Promise<UpdateCategoryResponseDto> {
+    return this.categoryService.updateCategory(query)
+  }
 }
