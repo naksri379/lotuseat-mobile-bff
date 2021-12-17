@@ -61,6 +61,16 @@ import {
 @ApiExtraModels(ResponseSuccess200, GetCategoryListResponseDto, UpdateCategoryResponseDto)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
+
+  @ApiOperation({ summary: 'get token' })
+  @ApiDefaultSuccessResponse(200)
+  @ApiDefaultErrorResponse(404)
+  @Get('/v1/token')
+  @UseGuards(JwtExtractorGuard)
+  async getOmniToken() {
+    return this.categoryService.getToken()
+  }
+
   @ApiOperation({ summary: 'category list' })
   @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
   @ApiDefaultErrorResponse(404)
@@ -71,18 +81,6 @@ export class CategoryController {
     @Query() query: GetCategoryListRequestDto
   ): Promise<GetCategoryListResponseDto[]> {
     return this.categoryService.getCategoryList(query)
-  }
-
-  @ApiOperation({ summary: 'create category' })
-  @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
-  @ApiDefaultErrorResponse()
-  @Post('/v1/create')
-  @UseGuards(JwtExtractorGuard)
-  @UsePipes(new JoiValidationPipe(CREATE_CATEGORY_REQUEST_SCHEMA))
-  async createCategory(
-    @Body() post: CreateCategoryRequestDto
-  ): Promise<CreateCategoryResponseDto[]> {
-    return this.categoryService.createCategory(post)
   }
 
   @ApiOperation({ summary: 'find category by Id' })
@@ -97,25 +95,16 @@ export class CategoryController {
     return this.categoryService.getCategoryById(query)
   }
 
-  @ApiOperation({ summary: 'delete category' })
-  @ApiDefaultErrorResponse(404)
-  @Delete('/v1/:id')
-  @HttpCode(204)
+  @ApiOperation({ summary: 'create category' })
+  @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
+  @ApiDefaultErrorResponse()
+  @Post('/v1/create')
   @UseGuards(JwtExtractorGuard)
-  @UsePipes(new JoiValidationPipe(DELETE_CATEGORY_BY_ID_REQUEST_SCHEMA))
-  async deleteCategory(
-    @Param() query: DeleteCategoryRequestDto
-  ): Promise<void> {
-    await this.categoryService.deleteCategoryById(query)
-  }
-
-  @ApiOperation({ summary: 'get token' })
-  @ApiDefaultSuccessResponse(200)
-  @ApiDefaultErrorResponse(404)
-  @Get('/v1/token')
-  @UseGuards(JwtExtractorGuard)
-  async getOmniToken() {
-    return this.categoryService.getToken()
+  @UsePipes(new JoiValidationPipe(CREATE_CATEGORY_REQUEST_SCHEMA))
+  async createCategory(
+    @Body() post: CreateCategoryRequestDto
+  ): Promise<CreateCategoryResponseDto[]> {
+    return this.categoryService.createCategory(post)
   }
 
   @ApiOperation({ summary: 'update category' })
@@ -129,4 +118,17 @@ export class CategoryController {
   ): Promise<UpdateCategoryResponseDto> {
     return this.categoryService.updateCategory(query)
   }
+
+  @ApiOperation({ summary: 'delete category' })
+  @ApiDefaultErrorResponse(404)
+  @Delete('/v1/:id')
+  @HttpCode(204)
+  @UseGuards(JwtExtractorGuard)
+  @UsePipes(new JoiValidationPipe(DELETE_CATEGORY_BY_ID_REQUEST_SCHEMA))
+  async deleteCategory(
+    @Param() query: DeleteCategoryRequestDto
+  ): Promise<void> {
+    await this.categoryService.deleteCategoryById(query)
+  }
+
 }
