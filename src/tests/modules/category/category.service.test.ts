@@ -119,28 +119,37 @@ describe('For CategoryService', () => {
       }
     })
   })
-  test('when response is not empty then successfully return updated category data', async () => {
-    const result: AxiosResponse = {
-      data: mockUpdatedCategoryData,
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config: {},
-    }
-    jest.spyOn(httpService, 'put').mockReturnValueOnce(of(result))
-    const actualResult = await categoryService.updateCategory(
-      {
-        id: '1a111a1aaaa111a111111111',
-        nameEn: 'Electronics',
-        nameTh: 'อุปกรณ์อิเล็กทรอนิกส์',
+
+
+
+  describe('For updateCategory method', () => {
+    test('when response is not empty then successfully return updated category data', async () => {
+      const inputData: UpdateCategoryRequestDto = {
+        id: '61baed559f389f44566df39d',
+        nameEn: 'Electronics 2',
+        nameTh: 'อุปกรณ์อิเล็กทรอนิกส์ 2',
         status: 'ACTIVE',
         parentId: '',
         group: 'PRODUCT'
-      } as UpdateCategoryRequestDto
-    )
-    
-    expect(actualResult).toEqual(mockUpdatedCategoryData)
+      }
+      const result: AxiosResponse = {
+        data: mockUpdatedCategoryData,
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: {},
+      }
+      jest.spyOn(httpService, 'put').mockReturnValueOnce(of(result))
+      try {
+        const actualResult = await categoryService.updateCategory(
+          inputData
+        )
+        expect(actualResult).toEqual(mockUpdatedCategoryData)
+      } catch (exception) {
+        expect(exception).toBeInstanceOf(CustomError)
+        expect(exception).toHaveProperty('statusCode', 404)
+      }
+    })
   })
-
   
 })
