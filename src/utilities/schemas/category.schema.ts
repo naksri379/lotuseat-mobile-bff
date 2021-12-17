@@ -1,8 +1,5 @@
 import * as Joi from 'joi'
-import {
-  IS_REQUIRED,
-  IS_NOT_A_NUMBER,
-} from 'src/constants/joiSchemaConstant'
+import { IS_REQUIRED, IS_NOT_A_NUMBER } from 'src/constants/joiSchemaConstant'
 
 export const GET_CATEGORY_LIST_REQUEST_SCHEMA = Joi.object({
   offset: Joi.number()

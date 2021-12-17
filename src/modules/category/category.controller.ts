@@ -7,16 +7,10 @@ import {
   Param,
   Post,
   Put,
-  Query,
   UseGuards,
   UsePipes,
 } from '@nestjs/common'
-import {
-  ApiExtraModels,
-  ApiHeaders,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger'
+import { ApiExtraModels, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ResponseSuccess200 } from 'src/domains/responseSuccess.dto'
 import {
   ApiDefaultErrorResponse,
@@ -37,7 +31,6 @@ import {
   GetCategoryByIdRequestDto,
   DeleteCategoryRequestDto,
   CreateCategoryRequestDto,
-  GetCategoryListRequestDto,
   UpdateCategoryRequestDto,
 } from './models/category.request'
 import {
@@ -58,7 +51,11 @@ import {
 //   },
 // ])
 @Controller('category')
-@ApiExtraModels(ResponseSuccess200, GetCategoryListResponseDto, UpdateCategoryResponseDto)
+@ApiExtraModels(
+  ResponseSuccess200,
+  GetCategoryListResponseDto,
+  UpdateCategoryResponseDto
+)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
@@ -77,9 +74,7 @@ export class CategoryController {
   @Get('/v1/list')
   @UseGuards(JwtExtractorGuard)
   @UsePipes(new JoiValidationPipe(GET_CATEGORY_LIST_REQUEST_SCHEMA))
-  async getCategoryList(
-   
-  ): Promise<GetCategoryListResponseDto[]> {
+  async getCategoryList(): Promise<GetCategoryListResponseDto[]> {
     return this.categoryService.getCategoryList()
   }
 
@@ -130,5 +125,4 @@ export class CategoryController {
   ): Promise<void> {
     await this.categoryService.deleteCategoryById(query)
   }
-
 }

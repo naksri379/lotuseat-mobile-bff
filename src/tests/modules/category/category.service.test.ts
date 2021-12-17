@@ -14,7 +14,6 @@ import {
   CreateCategoryRequestDto,
   GetCategoryByIdRequestDto,
   DeleteCategoryRequestDto,
-  GetCategoryListRequestDto,
   UpdateCategoryRequestDto,
 } from 'src/modules/category/models/category.request'
 import {
@@ -237,9 +236,8 @@ describe('For CategoryService', () => {
       jest.spyOn(httpService, 'put').mockReturnValueOnce(of(resultPut))
       const actualResult: UpdateCategoryResponseDto =
         await categoryService.updateCategory(inputData)
-      
+
       expect(actualResult).toEqual(mockUpdatedCategoryData)
-      
     })
   })
 })

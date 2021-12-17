@@ -12,7 +12,6 @@ export class GetCategoryListRequestDto {
   //     'The number of items to skip before starting to collect the result set',
   // })
   // offset: number
-
   // @ApiProperty({
   //   name: 'limit',
   //   required: true,
