@@ -36,6 +36,20 @@ describe('For CategoryService', () => {
     categoryServiceHelper = module.get<CategoryServiceHelper>(
       CategoryServiceHelper
     )
+
+    const accessTokenResponse: AxiosResponse = {
+      data: {
+        access_token: '123',
+      },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {},
+    }
+
+    jest
+      .spyOn(categoryService, 'getToken')
+      .mockReturnValueOnce(of(accessTokenResponse).toPromise())
   })
 
   afterEach(() => {
@@ -47,7 +61,7 @@ describe('For CategoryService', () => {
     const expectedResult: GetCategoryListResponseDto[] =
       mockCategoryListResponse
     const result: AxiosResponse = {
-      data: mockCategoryListRawData,
+      data: mockCategoryListResponse,
       status: 200,
       statusText: 'OK',
       headers: {},
@@ -87,16 +101,13 @@ describe('For CategoryService', () => {
       const expectedResult: GetCategoryListResponseDto =
         mockCategoryListResponse[0]
       const result: AxiosResponse = {
-        data: mockCategoryListResponse,
+        data: expectedResult,
         status: 200,
         statusText: 'OK',
         headers: {},
         config: {},
       }
       jest.spyOn(httpService, 'get').mockReturnValueOnce(of(result))
-      jest
-        .spyOn(categoryServiceHelper, 'mapCategoryListResponse')
-        .mockReturnValueOnce(mockCategoryListResponse)
 
       const actualResult = await categoryService.getCategoryById({
         id: expectedResult.id,
@@ -107,16 +118,13 @@ describe('For CategoryService', () => {
 
     test('when request id is not match then throw 404', async () => {
       const result: AxiosResponse = {
-        data: mockCategoryListResponse,
-        status: 200,
-        statusText: 'OK',
+        data: {},
+        status: 404,
+        statusText: 'Not found',
         headers: {},
         config: {},
       }
       jest.spyOn(httpService, 'get').mockReturnValueOnce(of(result))
-      jest
-        .spyOn(categoryServiceHelper, 'mapCategoryListResponse')
-        .mockReturnValueOnce(mockCategoryListResponse)
 
       try {
         await categoryService.getCategoryById({
