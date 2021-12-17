@@ -41,12 +41,12 @@ export const DELETE_CATEGORY_BY_ID_REQUEST_SCHEMA = Joi.object({
 }).unknown(true)
 
 export const CREATE_CATEGORY_REQUEST_SCHEMA = Joi.object({
-  en: Joi.string()
+  nameEn: Joi.string()
     .required()
     .messages({
       'any.required': `{#key} ${IS_REQUIRED}`,
     }),
-  th: Joi.string()
+  nameTh: Joi.string()
     .required()
     .messages({
       'any.required': `{#key} ${IS_REQUIRED}`,

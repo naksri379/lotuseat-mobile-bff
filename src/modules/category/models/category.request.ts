@@ -28,27 +28,32 @@ export class CreateCategoryRequestDto {
     name: 'parentId',
     required: true,
     type: String,
+    description: 'The brand of product.',
   })
   parentId: string
 
   @ApiProperty({
-    name: 'en',
+    name: 'nameEn',
     required: true,
     type: String,
+    description: 'The english name of data source.',
   })
-  en: string
+  nameEn: string
 
   @ApiProperty({
-    name: 'th',
+    name: 'nameTh',
     required: true,
     type: String,
+    description: 'The thai name of data source',
   })
-  th: string
+  nameTh: string
 
   @ApiProperty({
     name: 'status',
     required: true,
     type: String,
+    description:
+      "The status of category if this available that status is 'ACTIVE'",
   })
   status: string
 
@@ -56,6 +61,7 @@ export class CreateCategoryRequestDto {
     name: 'group',
     required: true,
     type: String,
+    description: 'The list of shops of product.',
   })
   group: string
 }
