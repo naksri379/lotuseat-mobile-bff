@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
+  Post,
   Put,
   Query,
   UseGuards,
@@ -21,22 +22,29 @@ import {
   ApiDefaultErrorResponse,
   ApiDefaultSuccessResponse,
 } from 'src/middleware/decorator'
+
 import { JwtExtractorGuard } from 'src/middleware/guards/jwtExtractor.guard'
 import { JoiValidationPipe } from 'src/middleware/pipes/joiValidation.pipe'
 import {
   GET_CATEGORY_BY_ID_REQUEST_SCHEMA,
   DELETE_CATEGORY_BY_ID_REQUEST_SCHEMA,
   GET_CATEGORY_LIST_REQUEST_SCHEMA,
+  CREATE_CATEGORY_REQUEST_SCHEMA,
   UPDATE_CATEGORY_REQUEST_SCHEMA,
 } from 'src/utilities/schemas/category.schema'
 import { CategoryService } from './category.service'
 import {
   GetCategoryByIdRequestDto,
   DeleteCategoryRequestDto,
+  CreateCategoryRequestDto,
   GetCategoryListRequestDto,
   UpdateCategoryRequestDto,
 } from './models/category.request'
-import { GetCategoryListResponseDto, UpdateCategoryResponseDto } from './models/category.response'
+import {
+  CreateCategoryResponseDto,
+  GetCategoryListResponseDto,
+  UpdateCategoryResponseDto,
+} from './models/category.response'
 
 @ApiTags('category')
 // @ApiHeaders([
@@ -63,6 +71,18 @@ export class CategoryController {
     @Query() query: GetCategoryListRequestDto
   ): Promise<GetCategoryListResponseDto[]> {
     return this.categoryService.getCategoryList(query)
+  }
+
+  @ApiOperation({ summary: 'create category' })
+  @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
+  @ApiDefaultErrorResponse()
+  @Post('/v1/create')
+  @UseGuards(JwtExtractorGuard)
+  @UsePipes(new JoiValidationPipe(CREATE_CATEGORY_REQUEST_SCHEMA))
+  async createCategory(
+    @Body() post: CreateCategoryRequestDto
+  ): Promise<CreateCategoryResponseDto[]> {
+    return this.categoryService.createCategory(post)
   }
 
   @ApiOperation({ summary: 'find category by Id' })
@@ -97,7 +117,7 @@ export class CategoryController {
   async getOmniToken() {
     return this.categoryService.getToken()
   }
-  
+
   @ApiOperation({ summary: 'update category' })
   @ApiDefaultSuccessResponse(200, UpdateCategoryResponseDto)
   @ApiDefaultErrorResponse(404)
@@ -109,9 +129,4 @@ export class CategoryController {
   ): Promise<UpdateCategoryResponseDto> {
     return this.categoryService.updateCategory(query)
   }
-
-
-
-
-    
 }

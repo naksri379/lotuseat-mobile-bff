@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { array, string } from 'joi'
 
 /**
  * Example data transfer object with swagger
@@ -20,6 +21,43 @@ export class GetCategoryListRequestDto {
     description: 'The numbers of items to return.',
   })
   limit: number
+}
+
+export class CreateCategoryRequestDto {
+  @ApiProperty({
+    name: 'parentId',
+    required: true,
+    type: String,
+  })
+  parentId: string
+
+  @ApiProperty({
+    name: 'en',
+    required: true,
+    type: String,
+  })
+  en: string
+
+  @ApiProperty({
+    name: 'th',
+    required: true,
+    type: String,
+  })
+  th: string
+
+  @ApiProperty({
+    name: 'status',
+    required: true,
+    type: String,
+  })
+  status: string
+
+  @ApiProperty({
+    name: 'group',
+    required: true,
+    type: String,
+  })
+  group: string
 }
 
 export class GetCategoryByIdRequestDto {
@@ -70,7 +108,8 @@ export class UpdateCategoryRequestDto {
     name: 'status',
     required: true,
     type: String,
-    description: 'The status of category if this available that status is \'ACTIVE\'',
+    description:
+      "The status of category if this available that status is 'ACTIVE'",
   })
   status: string
 

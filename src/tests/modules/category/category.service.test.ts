@@ -6,8 +6,17 @@ import { AxiosResponse } from 'axios'
 
 import { CategoryService } from '../../../modules/category/category.service'
 import { CategoryServiceHelper } from 'src/modules/category/category.service.helper'
-import { DeleteCategoryRequestDto, GetCategoryByIdRequestDto, GetCategoryListRequestDto, UpdateCategoryRequestDto } from 'src/modules/category/models/category.request'
-import { GetCategoryListResponseDto, UpdateCategoryResponseDto } from 'src/modules/category/models/category.response'
+import {
+  GetCategoryListResponseDto,
+  UpdateCategoryResponseDto,
+} from 'src/modules/category/models/category.response'
+import {
+  CreateCategoryRequestDto,
+  GetCategoryByIdRequestDto,
+  DeleteCategoryRequestDto,
+  GetCategoryListRequestDto,
+  UpdateCategoryRequestDto,
+} from 'src/modules/category/models/category.request'
 import {
   mockCategoryListResponse,
   mockUpdatedCategoryData,
@@ -92,6 +101,36 @@ describe('For CategoryService', () => {
     expect(actualResult).toEqual([])
   })
 
+  //------------- create category ----------------
+  describe('creat category method', () => {
+    test('when create category is successful then return create data in mock data list', async () => {
+      const mockCreateCategory: CreateCategoryRequestDto = {
+        parentId: '11111',
+        en: 'General',
+        th: 'ทั่วไป',
+        status: 'ACTIVE',
+        group: 'PRODUCT',
+      }
+      const result: AxiosResponse = {
+        data: mockCreateCategory,
+        status: 201,
+        statusText: 'CREATED',
+        headers: {},
+        config: {},
+      }
+
+      jest.spyOn(httpService, 'post').mockReturnValueOnce(of(result))
+      // jest
+      // .spyOn(categoryServiceHelper, 'mapCategoryListResponse')
+      // .mockReturnValueOnce(mockCategoryListResponse)
+
+      const actualResult = await categoryService.createCategory(
+        mockCreateCategory
+      )
+      expect(actualResult).toEqual(mockCreateCategory)
+    })
+  })
+
   describe('For getCategoryById method', () => {
     test('when request id is match then return data', async () => {
       const expectedResult: GetCategoryListResponseDto =
@@ -174,8 +213,6 @@ describe('For CategoryService', () => {
     })
   })
 
-
-
   describe('For updateCategory method', () => {
     test('when response is not empty then successfully return updated category data', async () => {
       const inputData: UpdateCategoryRequestDto = {
@@ -184,7 +221,7 @@ describe('For CategoryService', () => {
         nameTh: 'อุปกรณ์อิเล็กทรอนิกส์ 2',
         status: 'ACTIVE',
         parentId: '',
-        group: 'PRODUCT'
+        group: 'PRODUCT',
       }
       const result: AxiosResponse = {
         data: mockUpdatedCategoryData,
@@ -195,9 +232,8 @@ describe('For CategoryService', () => {
       }
       jest.spyOn(httpService, 'put').mockReturnValueOnce(of(result))
       try {
-        const actualResult: UpdateCategoryResponseDto = await categoryService.updateCategory(
-          inputData
-        )
+        const actualResult: UpdateCategoryResponseDto =
+          await categoryService.updateCategory(inputData)
         expect(actualResult).toEqual(mockUpdatedCategoryData)
       } catch (exception) {
         expect(exception).toBeInstanceOf(CustomError)
@@ -205,5 +241,4 @@ describe('For CategoryService', () => {
       }
     })
   })
-  
 })
