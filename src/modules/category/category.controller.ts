@@ -78,9 +78,9 @@ export class CategoryController {
   @UseGuards(JwtExtractorGuard)
   @UsePipes(new JoiValidationPipe(GET_CATEGORY_LIST_REQUEST_SCHEMA))
   async getCategoryList(
-    @Query() query: GetCategoryListRequestDto
+   
   ): Promise<GetCategoryListResponseDto[]> {
-    return this.categoryService.getCategoryList(query)
+    return this.categoryService.getCategoryList()
   }
 
   @ApiOperation({ summary: 'find category by Id' })

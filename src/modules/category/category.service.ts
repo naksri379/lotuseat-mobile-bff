@@ -26,7 +26,7 @@ export class CategoryService {
 
   @ExecuteTimeLog()
   async getCategoryList(
-    getCategoryListRequest: GetCategoryListRequestDto
+   
   ): Promise<GetCategoryListResponseDto[]> {
     try {
       const token = await this.getToken()
