@@ -1,6 +1,5 @@
 import { CustomCallApi } from './customCallApi'
 import axios from 'axios'
-const qs = require('querystring');
 export const weOmniAuth = async (data: any) => {
   // const config = {
   //   method: 'POST',
@@ -17,8 +16,8 @@ export const weOmniAuth = async (data: any) => {
     
   
   // }
-
-
+  console.log('weOmniAuth');
+  
   const requestBody = {
     grant_type: 'client_credentials',
   }
@@ -31,17 +30,21 @@ export const weOmniAuth = async (data: any) => {
       'Accept-Encoding': 'gzip, deflate, br',
     }
   }
-let url = 'https://platform.weomni.com/uaa/oauth/token'
-const response =  await axios.post(url,qs.stringify(requestBody), config)
+  let url = 'https://platform.weomni.com/uaa/oauth/token'
+  try{
+    const response =  await axios.post(url,JSON.stringify(requestBody), config)
   .then((result) => {
     // Do somthing
-    console.log('response' , result);
+    console.log('response' , response);
+    console.log('result' , result);
     return result
   })
   .catch((err) => {
-    // Do somthing
-  //  console.log('response' , response);
+    console.log('err' , err);
   })
+} catch(err)  {
+  console.log('err' , err);
+}
 
 //  const response = await CustomCallApi(config)
 
