@@ -108,7 +108,7 @@ export class CategoryService {
       }
     }
   }
-
+  @ExecuteTimeLog()
   async getToken() {
     const requestBody = {
       grant_type: 'client_credentials',
@@ -122,12 +122,33 @@ export class CategoryService {
         'Accept-Encoding': 'gzip, deflate, br',
       },
     }
-    
+    try{
     const payload = await this.httpService
       .post(process.env.WEOMNI_URL_TOKEN, qs.stringify(requestBody), config)
       .toPromise()
+      if (payload.status === 200) {
+        return payload.data.access_token
+      }
+    } catch (exception) {
+      const { response } = exception
 
-    return payload.data.access_token
+      if (!response) {
+        throw CustomError.internalServerError(exception)
+      }
+
+      const error = response.data
+
+      switch (error?.status) {
+        case 404:
+          throw CustomError.notFound(error.detail)
+
+        default:
+          throw CustomError.dependencyError(
+            error.detail || error.error || error
+          )
+      }
+    }
+ 
   }
 
   @ExecuteTimeLog()

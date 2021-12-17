@@ -55,7 +55,7 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
   @ApiOperation({ summary: 'category list' })
   @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
-  @ApiDefaultErrorResponse()
+  @ApiDefaultErrorResponse(404)
   @Get('/v1/list')
   @UseGuards(JwtExtractorGuard)
   @UsePipes(new JoiValidationPipe(GET_CATEGORY_LIST_REQUEST_SCHEMA))
@@ -90,6 +90,8 @@ export class CategoryController {
   }
 
   @ApiOperation({ summary: 'get token' })
+  @ApiDefaultSuccessResponse(200)
+  @ApiDefaultErrorResponse(404)
   @Get('/v1/token')
   @UseGuards(JwtExtractorGuard)
   async getOmniToken() {
