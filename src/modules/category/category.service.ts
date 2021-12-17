@@ -6,7 +6,6 @@ import {
   GetCategoryListRequestDto,
 } from './models/category.request'
 import { GetCategoryListResponseDto } from './models/category.response'
-import { mockCategoryListRawData } from '../../tests/mocks/category.service.mock'
 import { CategoryServiceHelper } from './category.service.helper'
 
 const qs = require('querystring')
@@ -33,7 +32,7 @@ export class CategoryService {
             'Accept-Encoding': 'gzip, deflate, br',
             Authorization: `Bearer ${token}`,
             Cookie:
-              'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
+              'AWSALB=712qEDE/dPHkCeg5gDd5SPtwosBu7ODrBJ/F9F/adK4lOV5vTb6+qNnIufAIO1zk4hJGlROQgshyjJjABz39vvqFLWtH0SPy19G6aYOAPOlMClX+lkdQ+hyCL/UF; AWSALBCORS=712qEDE/dPHkCeg5gDd5SPtwosBu7ODrBJ/F9F/adK4lOV5vTb6+qNnIufAIO1zk4hJGlROQgshyjJjABz39vvqFLWtH0SPy19G6aYOAPOlMClX+lkdQ+hyCL/UF; XSRF-TOKEN=3eb39276-b3f6-4119-836e-e611a4a25e5b',
           },
         })
         .toPromise()
@@ -45,7 +44,7 @@ export class CategoryService {
       const { response } = exception
 
       if (!response) {
-        throw CustomError.dependencyError(exception)
+        throw CustomError.internalServerError(exception)
       }
 
       const error = response.data
@@ -55,7 +54,7 @@ export class CategoryService {
           throw CustomError.notFound(error.detail)
 
         default:
-          throw CustomError.internalServerError(
+          throw CustomError.dependencyError(
             error.detail || error.error || error
           )
       }
@@ -66,35 +65,48 @@ export class CategoryService {
   async getCategoryById(
     getCategoryByIdRequest: GetCategoryByIdRequestDto
   ): Promise<GetCategoryListResponseDto> {
-    const payload = await this.httpService
-      .get(
-        // 'https://api.dev.customer.it-lotus.com/lotusseat-mobile-bff/actuator/health',
-        'https://google.com',
-        {
-          // data: getCategoryByIdRequest, // example send data
-        }
-      )
-      .toPromise()
+    try {
+      const token = await this.getToken()
 
-    if (payload.status === 200) {
-      const mapCategoryList =
-        this.categoryServiceHelper.mapCategoryListResponse(
-          mockCategoryListRawData
+      const payload = await this.httpService
+        .get(
+          `https://platform.weomni.com/shop/api/projects/eat/categories/${getCategoryByIdRequest.id}`,
+          {
+            headers: {
+              Accept: '*/*',
+              'Accept-Encoding': 'gzip, deflate, br',
+              Authorization: `Bearer ${token}`,
+              Cookie:
+                'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
+            },
+          }
         )
+        .toPromise()
 
-      const result = mapCategoryList.find(
-        (category) =>
-          category.id.toString() === getCategoryByIdRequest.id.toString()
-      )
+      if (payload.status === 200) {
+        return payload.data
+      }
+    } catch (exception) {
+      const { response } = exception
 
-      if (!result) {
-        throw CustomError.notFound(`Category not found.`)
+      if (!response) {
+        throw CustomError.internalServerError(exception)
       }
 
-      return result
+      const error = response.data
+
+      switch (error?.status) {
+        case 404:
+          throw CustomError.notFound(error.detail)
+
+        default:
+          throw CustomError.dependencyError(
+            error.detail || error.error || error
+          )
+      }
     }
   }
-  
+
   async getToken() {
     const requestBody = {
       grant_type: 'client_credentials',
