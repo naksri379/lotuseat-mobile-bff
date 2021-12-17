@@ -126,10 +126,10 @@ export class CategoryService {
         'Accept-Encoding': 'gzip, deflate, br',
       },
     }
-    try{
-    const payload = await this.httpService
-      .post(process.env.WEOMNI_URL_TOKEN, qs.stringify(requestBody), config)
-      .toPromise()
+    try {
+      const payload = await this.httpService
+        .post(process.env.WEOMNI_URL_TOKEN, qs.stringify(requestBody), config)
+        .toPromise()
       if (payload.status === 200) {
         return payload.data.access_token
       }
@@ -152,7 +152,6 @@ export class CategoryService {
           )
       }
     }
- 
   }
 
   @ExecuteTimeLog()
@@ -162,8 +161,8 @@ export class CategoryService {
     const createCategoryModel: CreateCategoryResponseDto = {
       parentId: createCategoryRequest.parentId,
       name: {
-        th: createCategoryRequest.th,
-        en: createCategoryRequest.en,
+        th: createCategoryRequest.nameTh,
+        en: createCategoryRequest.nameEn,
       },
       status: createCategoryRequest.status,
       group: createCategoryRequest.group,

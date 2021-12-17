@@ -102,12 +102,12 @@ describe('For CategoryService', () => {
   })
 
   //------------- create category ----------------
-  describe('creat category method', () => {
+  describe('For createCategory method', () => {
     test('when create category is successful then return create data in mock data list', async () => {
       const mockCreateCategory: CreateCategoryRequestDto = {
         parentId: '11111',
-        en: 'General',
-        th: 'ทั่วไป',
+        nameEn: 'General',
+        nameTh: 'ทั่วไป',
         status: 'ACTIVE',
         group: 'PRODUCT',
       }
