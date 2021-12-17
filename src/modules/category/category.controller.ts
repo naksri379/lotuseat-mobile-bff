@@ -58,7 +58,7 @@ import {
 //   },
 // ])
 @Controller('category')
-@ApiExtraModels(ResponseSuccess200, GetCategoryListResponseDto)
+@ApiExtraModels(ResponseSuccess200, GetCategoryListResponseDto, UpdateCategoryResponseDto)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
   @ApiOperation({ summary: 'category list' })

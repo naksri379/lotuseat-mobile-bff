@@ -299,16 +299,18 @@ export class CategoryService {
                   'AWSALB=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; AWSALBCORS=Db5313RTMK4TNMhTKQLtSbcr7uG9bZ0NasJXs4XJiUHzzjjKQpYKYfsvTCdREOVokoi1DFYOIp8bZq+Xy0fEJ2I6ZunGgZPnYiVPH5RCJ3QKkr1+3ljQZjhue4Hh; XSRF-TOKEN=c111118f-5f77-42b3-a50d-3cdfd81904d2',
               },
             }
-          )
-          .toPromise()
+          ).toPromise()
+          
+          if (payload && payload.status === 200)
+          return payload.data;
+          else 
+          throw CustomError.notFound(`Update category failed`)
 
-        if (payload && payload.status === 200) return updatedCategory
-        else throw CustomError.notFound(`Update category failed`)
-      } else {
-        throw CustomError.notFound(
-          `The id ${updateCategoryRequest.id} is not found in the category`
-        )
-      }
+        } else {
+          throw CustomError.notFound(`The id ${updateCategoryRequest.id} is not found in the category`)
+        }
+
+        
     } catch (exception) {
       const { response } = exception
 

@@ -68,30 +68,25 @@ export const UPDATE_CATEGORY_REQUEST_SCHEMA = Joi.object({
     .required()
     .messages({
       'any.required': `{#key} ${IS_REQUIRED}`,
-      'string.base': `{#key} ${MUST_NOT_BE_EMPTY}`,
     }),
   nameEn: Joi.string()
     .required()
     .messages({
       'any.required': `{#key} ${IS_REQUIRED}`,
-      'string.base': `{#key} ${MUST_NOT_BE_EMPTY}`,
     }),
   nameTh: Joi.string()
     .required()
     .messages({
       'any.required': `{#key} ${IS_REQUIRED}`,
-      'string.base': `{#key} ${MUST_NOT_BE_EMPTY}`,
     }),
   status: Joi.string()
     .required()
     .messages({
       'any.required': `{#key} ${IS_REQUIRED}`,
-      'string.base': `{#key} ${MUST_NOT_BE_EMPTY}`,
     }),
   group: Joi.string()
     .required()
     .messages({
       'any.required': `{#key} ${IS_REQUIRED}`,
-      'string.base': `{#key} ${MUST_NOT_BE_EMPTY}`,
     }),
 }).unknown(true)

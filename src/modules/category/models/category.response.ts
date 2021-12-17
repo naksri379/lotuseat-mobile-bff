@@ -71,19 +71,7 @@ export class UpdateCategoryResponseDto {
   group: string
 
   @ApiProperty()
-  parentId?: string
-
-  @ApiProperty()
-  externalRef?: string
-
-  @ApiProperty()
-  parentExternalRef?: string
-
-  @ApiProperty()
-  batchId?: string
-
-  @ApiProperty()
-  source?: string
+  parentId: string
 }
 
 export class NameOfCategory {
