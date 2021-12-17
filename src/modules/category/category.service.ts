@@ -136,16 +136,16 @@ export class CategoryService {
 
   @ExecuteTimeLog()
   async createCategory(
-    createCategory: CreateCategoryRequestDto
+    createCategoryRequest: CreateCategoryRequestDto
   ): Promise<CreateCategoryResponseDto[]> {
     const createCategoryModel: CreateCategoryResponseDto = {
-      parentId: createCategory.parentId,
+      parentId: createCategoryRequest.parentId,
       name: {
-        th: createCategory.en,
-        en: createCategory.th,
+        th: createCategoryRequest.th,
+        en: createCategoryRequest.en,
       },
-      status: createCategory.status,
-      group: createCategory.group,
+      status: createCategoryRequest.status,
+      group: createCategoryRequest.group,
     }
 
     try {
