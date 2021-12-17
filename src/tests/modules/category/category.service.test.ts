@@ -76,9 +76,7 @@ describe('For CategoryService', () => {
     jest
       .spyOn(categoryServiceHelper, 'mapCategoryListResponse')
       .mockReturnValueOnce(expectedResult)
-    const actualResult = await categoryService.getCategoryList(
-      {} as GetCategoryListRequestDto
-    )
+    const actualResult = await categoryService.getCategoryList()
     expect(actualResult).toEqual(mockCategoryListResponse)
   })
 
@@ -95,9 +93,7 @@ describe('For CategoryService', () => {
       .spyOn(categoryServiceHelper, 'mapCategoryListResponse')
       .mockReturnValueOnce([])
 
-    const actualResult = await categoryService.getCategoryList(
-      {} as GetCategoryListRequestDto
-    )
+    const actualResult = await categoryService.getCategoryList()
     expect(actualResult).toEqual([])
   })
 
@@ -216,29 +212,34 @@ describe('For CategoryService', () => {
   describe('For updateCategory method', () => {
     test('when response is not empty then successfully return updated category data', async () => {
       const inputData: UpdateCategoryRequestDto = {
-        id: '61baed559f389f44566df39d',
+        id: '1a111a1aaaa111a111111111',
         nameEn: 'Electronics 2',
         nameTh: 'อุปกรณ์อิเล็กทรอนิกส์ 2',
         status: 'ACTIVE',
         parentId: '',
         group: 'PRODUCT',
       }
-      const result: AxiosResponse = {
+      const resultGet: AxiosResponse = {
+        data: mockCategoryListResponse,
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: {},
+      }
+      const resultPut: AxiosResponse = {
         data: mockUpdatedCategoryData,
         status: 200,
         statusText: 'OK',
         headers: {},
         config: {},
       }
-      jest.spyOn(httpService, 'put').mockReturnValueOnce(of(result))
-      try {
-        const actualResult: UpdateCategoryResponseDto =
-          await categoryService.updateCategory(inputData)
-        expect(actualResult).toEqual(mockUpdatedCategoryData)
-      } catch (exception) {
-        expect(exception).toBeInstanceOf(CustomError)
-        expect(exception).toHaveProperty('statusCode', 404)
-      }
+      jest.spyOn(httpService, 'get').mockReturnValueOnce(of(resultGet))
+      jest.spyOn(httpService, 'put').mockReturnValueOnce(of(resultPut))
+      const actualResult: UpdateCategoryResponseDto =
+        await categoryService.updateCategory(inputData)
+      
+      expect(actualResult).toEqual(mockUpdatedCategoryData)
+      
     })
   })
 })

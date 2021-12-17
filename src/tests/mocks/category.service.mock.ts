@@ -89,7 +89,7 @@ export const mockCategoryListResponse = [
 ]
 
 export const mockUpdatedCategoryData = {
-  id: '61baed559f389f44566df39d',
+  id: '1a111a1aaaa111a111111111',
   projectId: 'eat',
   name: {
     en: 'Electronics 2',
