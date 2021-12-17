@@ -27,9 +27,9 @@ export class AppModule implements NestModule {
       .apply(LoggerMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL })
 
-    consumer
-      .apply(AccessMiddleware)
-      .exclude({ path: '/actuator/health', method: RequestMethod.GET })
-      .forRoutes({ path: '*', method: RequestMethod.ALL })
+    // consumer
+    //   .apply(AccessMiddleware)
+    //   .exclude({ path: '/actuator/health', method: RequestMethod.GET })
+    //   .forRoutes({ path: '*', method: RequestMethod.ALL })
   }
 }
