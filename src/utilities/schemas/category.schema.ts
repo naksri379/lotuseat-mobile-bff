@@ -20,6 +20,14 @@ export const GET_CATEGORY_LIST_REQUEST_SCHEMA = Joi.object({
     }),
 }).unknown(true)
 
+export const GET_CATEGORY_BY_ID_REQUEST_SCHEMA = Joi.object({
+  id: Joi.string()
+    .required()
+    .messages({
+      'any.required': `{#key} ${IS_REQUIRED}`,
+    }),
+}).unknown(true)
+
 export const DELETE_CATEGORY_BY_ID_REQUEST_SCHEMA = Joi.object({
   id: Joi.string()
     .required()

@@ -3,6 +3,14 @@ import { ApiProperty } from '@nestjs/swagger'
 /**
  * Example data transfer object with swagger
  */
+export class SupportLanguage {
+  @ApiProperty()
+  en: string
+
+  @ApiProperty()
+  th: string
+}
+
 export class GetCategoryListResponseDto {
   @ApiProperty()
   id: string
@@ -11,10 +19,7 @@ export class GetCategoryListResponseDto {
   projectId: string
 
   @ApiProperty()
-  nameTh: string
-
-  @ApiProperty()
-  nameEn: string
+  name: SupportLanguage
 
   @ApiProperty()
   status: string
