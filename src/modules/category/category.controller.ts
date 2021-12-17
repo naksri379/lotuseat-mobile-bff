@@ -89,13 +89,13 @@ export class CategoryController {
     await this.categoryService.deleteCategoryById(query)
   }
 
-  @ApiOperation({ summary: 'category list' })
-  @ApiDefaultSuccessResponse(200)
+  @ApiOperation({ summary: 'get token' })
   @Get('/v1/token')
   @UseGuards(JwtExtractorGuard)
   async getOmniToken() {
     return this.categoryService.getToken()
   }
+  
   @ApiOperation({ summary: 'update category' })
   @ApiDefaultSuccessResponse(200, UpdateCategoryResponseDto)
   @ApiDefaultErrorResponse(404)

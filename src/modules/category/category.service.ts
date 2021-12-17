@@ -122,9 +122,9 @@ export class CategoryService {
         'Accept-Encoding': 'gzip, deflate, br',
       },
     }
-    const url = 'https://platform.weomni.com/uaa/oauth/token'
+    
     const payload = await this.httpService
-      .post(url, qs.stringify(requestBody), config)
+      .post(process.env.WEOMNI_URL_TOKEN, qs.stringify(requestBody), config)
       .toPromise()
 
     return payload.data.access_token
