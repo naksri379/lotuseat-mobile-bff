@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { array, string } from 'joi'
 
 /**
  * Example data transfer object with swagger

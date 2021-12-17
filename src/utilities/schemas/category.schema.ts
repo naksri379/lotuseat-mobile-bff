@@ -2,7 +2,6 @@ import * as Joi from 'joi'
 import {
   IS_REQUIRED,
   IS_NOT_A_NUMBER,
-  MUST_NOT_BE_EMPTY,
 } from 'src/constants/joiSchemaConstant'
 
 export const GET_CATEGORY_LIST_REQUEST_SCHEMA = Joi.object({

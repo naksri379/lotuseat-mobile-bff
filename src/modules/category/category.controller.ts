@@ -97,7 +97,7 @@ export class CategoryController {
 
   @ApiOperation({ summary: 'create category' })
   @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
-  @ApiDefaultErrorResponse()
+  @ApiDefaultErrorResponse(400)
   @Post('/v1/create')
   @UseGuards(JwtExtractorGuard)
   @UsePipes(new JoiValidationPipe(CREATE_CATEGORY_REQUEST_SCHEMA))
