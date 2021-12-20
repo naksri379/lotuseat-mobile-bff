@@ -44,7 +44,8 @@ export class UpdateCategoryRequestDto {
     name: 'status',
     required: true,
     type: String,
-    description: 'The status of category if this available that status is \'ACTIVE\'',
+    description:
+      "The status of category if this available that status is 'ACTIVE'",
   })
   status: string
 

@@ -6,7 +6,10 @@ import { AxiosResponse } from 'axios'
 import { of } from 'rxjs'
 import { mockProductListResponse } from 'src/tests/mocks/product.service.mock'
 import { UpdateCategoryRequestDto } from 'src/modules/category/models/category.request'
-import { mockCategoryListResponse, mockUpdatedCategoryData } from 'src/tests/mocks/category.service.mock'
+import {
+  mockCategoryListResponse,
+  mockUpdatedCategoryData,
+} from 'src/tests/mocks/category.service.mock'
 import { UpdateCategoryResponseDto } from 'src/modules/category/models/category.response'
 import CustomError from 'src/utilities/customError'
 
@@ -79,7 +82,7 @@ describe('For CategoryService', () => {
         id: '1a111a1aaaa111a111111111',
         name: {
           en: 'Electronics 2',
-          th: 'อุปกรณ์อิเล็กทรอนิกส์ 2'
+          th: 'อุปกรณ์อิเล็กทรอนิกส์ 2',
         },
         status: 'ACTIVE',
         parentId: '',
@@ -102,7 +105,7 @@ describe('For CategoryService', () => {
       jest.spyOn(httpService, 'get').mockReturnValueOnce(of(resultGet))
       jest.spyOn(httpService, 'put').mockReturnValueOnce(of(resultPut))
       try {
-        const actualResult: UpdateCategoryResponseDto = 
+        const actualResult: UpdateCategoryResponseDto =
           await categoryService.updateCategory(inputData)
         expect(actualResult).toEqual(mockUpdatedCategoryData)
       } catch (exception) {
@@ -116,7 +119,7 @@ describe('For CategoryService', () => {
         id: '1a111a1aaaa111a22222222',
         name: {
           en: 'Electronics 2',
-          th: 'อุปกรณ์อิเล็กทรอนิกส์ 2'
+          th: 'อุปกรณ์อิเล็กทรอนิกส์ 2',
         },
         status: 'ACTIVE',
         parentId: '',
@@ -139,7 +142,7 @@ describe('For CategoryService', () => {
       jest.spyOn(httpService, 'get').mockReturnValueOnce(of(resultGet))
       jest.spyOn(httpService, 'put').mockReturnValueOnce(of(resultPut))
       try {
-        const actualResult: UpdateCategoryResponseDto = 
+        const actualResult: UpdateCategoryResponseDto =
           await categoryService.updateCategory(inputData)
         expect(actualResult).toEqual(mockUpdatedCategoryData)
       } catch (exception) {
