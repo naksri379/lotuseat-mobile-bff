@@ -20,20 +20,19 @@ describe('For CategoryService', () => {
 
     httpService = module.get<HttpService>(HttpService)
     categoryService = module.get<CategoryService>(CategoryService)
+    const accessTokenResponse: AxiosResponse = {
+      data: {
+        access_token: '123',
+      },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {},
+    }
+    jest
+      .spyOn(categoryService, 'getToken')
+      .mockReturnValueOnce(of(accessTokenResponse).toPromise())
   })
-
-  const accessTokenResponse: AxiosResponse = {
-    data: {
-      access_token: '123',
-    },
-    status: 200,
-    statusText: 'OK',
-    headers: {},
-    config: {},
-  }
-  jest
-    .spyOn(categoryService, 'getToken')
-    .mockReturnValueOnce(of(accessTokenResponse).toPromise())
 
   afterEach(() => {
     jest.resetAllMocks()
