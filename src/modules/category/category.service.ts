@@ -119,7 +119,7 @@ export class CategoryService {
           ).toPromise()
           
           if (payload && payload.status === 200)
-          return updatedCategory;
+          return payload.data;
           else 
           throw CustomError.notFound(`Update category failed`)
 
