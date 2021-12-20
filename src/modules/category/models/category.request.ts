@@ -21,3 +21,13 @@ export class GetCategoryListRequestDto {
   })
   limit: number
 }
+
+export class DeleteCategoryRequestDto {
+  @ApiProperty({
+    name: 'id',
+    required: true,
+    type: String,
+    description: 'The Id of category',
+  })
+  id: string
+}

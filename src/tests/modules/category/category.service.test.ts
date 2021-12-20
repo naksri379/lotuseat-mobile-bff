@@ -5,6 +5,10 @@ import { ProductServiceHelper } from 'src/modules/product/product.service.helper
 import { AxiosResponse } from 'axios'
 import { of } from 'rxjs'
 import { mockProductListResponse } from 'src/tests/mocks/product.service.mock'
+import { mockCategoryListResponse } from 'src/tests/mocks/category.service.mock'
+import { GetCategoryListResponseDto } from 'src/modules/category/models/category.response'
+import { DeleteCategoryRequestDto } from 'src/modules/category/models/category.request'
+import CustomError from 'src/utilities/customError'
 
 jest.mock('src/utilities/logger')
 
@@ -66,6 +70,47 @@ describe('For CategoryService', () => {
 
       const actualResult = await categoryService.getCategoryList()
       expect(actualResult).toEqual([])
+    })
+  })
+
+  describe('For deleteCategoryById method', () => {
+    test('when request id is match then finish without throw', async () => {
+      const expectedResult: GetCategoryListResponseDto =
+        mockCategoryListResponse[0]
+      const result: AxiosResponse = {
+        data: null,
+        status: 204,
+        statusText: 'No Content',
+        headers: {},
+        config: {},
+      }
+      jest.spyOn(httpService, 'delete').mockReturnValueOnce(of(result))
+
+      await expect(
+        categoryService.deleteCategoryById({
+          id: expectedResult.id,
+        } as DeleteCategoryRequestDto)
+      ).resolves.not.toThrow()
+    })
+
+    test('when request id is not match then throw 404', async () => {
+      const result: AxiosResponse = {
+        data: mockCategoryListResponse,
+        status: 404,
+        statusText: 'NOT FOUND',
+        headers: {},
+        config: {},
+      }
+      jest.spyOn(httpService, 'delete').mockReturnValueOnce(of(result))
+
+      try {
+        await categoryService.deleteCategoryById({
+          id: '0',
+        } as DeleteCategoryRequestDto)
+      } catch (exception) {
+        expect(exception).toBeInstanceOf(CustomError)
+        expect(exception).toHaveProperty('statusCode', 404)
+      }
     })
   })
 })
