@@ -1,13 +1,13 @@
 import { HttpService, Injectable } from '@nestjs/common'
 import CustomError from 'src/utilities/customError'
 import { ExecuteTimeLog } from '../../middleware/decorator/executeTimeLog.decorator'
-
 import { GetCategoryListResponseDto } from './models/category.response'
 const qs = require('querystring')
 @Injectable()
 export class CategoryService {
   constructor(private readonly httpService: HttpService) {}
-@ExecuteTimeLog()
+
+  @ExecuteTimeLog()
   async getToken() {
     const requestBody = {
       grant_type: 'client_credentials',
@@ -49,7 +49,6 @@ export class CategoryService {
     }
   }
 
-  
   @ExecuteTimeLog()
   async getCategoryList(): Promise<GetCategoryListResponseDto[]> {
     const payload = await this.httpService
