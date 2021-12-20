@@ -4,7 +4,11 @@ import { CategoryService } from 'src/modules/category/category.service'
 import { ProductServiceHelper } from 'src/modules/product/product.service.helper'
 import { AxiosResponse } from 'axios'
 import { of } from 'rxjs'
+import { GetCategoryListResponseDto } from 'src/modules/category/models/category.response'
+import { GetCategoryByIdRequestDto } from 'src/modules/category/models/category.request'
 import { mockProductListResponse } from 'src/tests/mocks/product.service.mock'
+import { mockCategoryListResponse } from 'src/tests/mocks/category.service.mock'
+import CustomError from 'src/utilities/customError'
 
 jest.mock('src/utilities/logger')
 
@@ -66,6 +70,47 @@ describe('For CategoryService', () => {
 
       const actualResult = await categoryService.getCategoryList()
       expect(actualResult).toEqual([])
+    })
+  })
+
+  describe('For getCategoryById method', () => {
+    test('when request id is match then return data', async () => {
+      const expectedResult: GetCategoryListResponseDto =
+        mockCategoryListResponse[0]
+      const result: AxiosResponse = {
+        data: expectedResult,
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: {},
+      }
+      jest.spyOn(httpService, 'get').mockReturnValueOnce(of(result))
+
+      const actualResult = await categoryService.getCategoryById({
+        id: expectedResult.id,
+      } as GetCategoryByIdRequestDto)
+
+      expect(actualResult).toEqual(expectedResult)
+    })
+
+    test('when request id is not match then throw 404', async () => {
+      const result: AxiosResponse = {
+        data: {},
+        status: 404,
+        statusText: 'Not found',
+        headers: {},
+        config: {},
+      }
+      jest.spyOn(httpService, 'get').mockReturnValueOnce(of(result))
+
+      try {
+        await categoryService.getCategoryById({
+          id: '0',
+        } as GetCategoryByIdRequestDto)
+      } catch (exception) {
+        expect(exception).toBeInstanceOf(CustomError)
+        expect(exception).toHaveProperty('statusCode', 404)
+      }
     })
   })
 })

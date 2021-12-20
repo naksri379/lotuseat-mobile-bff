@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, UsePipes } from '@nestjs/common'
+import { Controller, Get, Param, UseGuards, UsePipes } from '@nestjs/common'
 import {
   ApiExtraModels,
   // ApiHeaders,
@@ -12,8 +12,12 @@ import {
 } from 'src/middleware/decorator'
 import { JwtExtractorGuard } from 'src/middleware/guards/jwtExtractor.guard'
 import { JoiValidationPipe } from 'src/middleware/pipes/joiValidation.pipe'
-import { GET_CATEGORY_LIST_REQUEST_SCHEMA } from 'src/utilities/schemas/category.schema'
+import {
+  GET_CATEGORY_BY_ID_REQUEST_SCHEMA,
+  GET_CATEGORY_LIST_REQUEST_SCHEMA,
+} from 'src/utilities/schemas/category.schema'
 import { CategoryService } from './category.service'
+import { GetCategoryByIdRequestDto } from './models/category.request'
 import { GetCategoryListResponseDto } from './models/category.response'
 
 @ApiTags('category')
@@ -49,5 +53,17 @@ export class CategoryController {
   @UsePipes(new JoiValidationPipe(GET_CATEGORY_LIST_REQUEST_SCHEMA))
   async getCategoryList(): Promise<GetCategoryListResponseDto[]> {
     return this.categoryService.getCategoryList()
+  }
+
+  @ApiOperation({ summary: 'find category by Id' })
+  @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
+  @ApiDefaultErrorResponse(404)
+  @Get('/v1/:id')
+  @UseGuards(JwtExtractorGuard)
+  @UsePipes(new JoiValidationPipe(GET_CATEGORY_BY_ID_REQUEST_SCHEMA))
+  async getCategoryByID(
+    @Param() query: GetCategoryByIdRequestDto
+  ): Promise<GetCategoryListResponseDto> {
+    return this.categoryService.getCategoryById(query)
   }
 }
