@@ -38,3 +38,17 @@ export class GetCategoryListResponseDto {
   @ApiProperty()
   source: string
 }
+
+export class CreateCategoryResponseDto {
+  @ApiProperty()
+  parentId: string
+
+  @ApiProperty()
+  name: SupportLanguage
+
+  @ApiProperty()
+  status: string
+
+  @ApiProperty()
+  group: string
+}

@@ -5,6 +5,7 @@ import { ProductServiceHelper } from 'src/modules/product/product.service.helper
 import { AxiosResponse } from 'axios'
 import { of } from 'rxjs'
 import { mockProductListResponse } from 'src/tests/mocks/product.service.mock'
+import { CreateCategoryRequestDto } from 'src/modules/category/models/category.request'
 
 jest.mock('src/utilities/logger')
 
@@ -66,6 +67,35 @@ describe('For CategoryService', () => {
 
       const actualResult = await categoryService.getCategoryList()
       expect(actualResult).toEqual([])
+    })
+  })
+
+  describe('creat category method', () => {
+    test('when create category is successful then return create data in mock data list', async () => {
+      const mockCreateCategory: CreateCategoryRequestDto = {
+        parentId: '11111',
+        en: 'General',
+        th: 'ทั่วไป',
+        status: 'ACTIVE',
+        group: 'PRODUCT',
+      }
+      const result: AxiosResponse = {
+        data: mockCreateCategory,
+        status: 201,
+        statusText: 'CREATED',
+        headers: {},
+        config: {},
+      }
+
+      jest.spyOn(httpService, 'post').mockReturnValueOnce(of(result))
+      // jest
+      // .spyOn(categoryServiceHelper, 'mapCategoryListResponse')
+      // .mockReturnValueOnce(mockCategoryListResponse)
+
+      const actualResult = await categoryService.createCategory(
+        mockCreateCategory
+      )
+      expect(actualResult).toEqual(mockCreateCategory)
     })
   })
 })

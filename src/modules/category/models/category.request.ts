@@ -21,3 +21,40 @@ export class GetCategoryListRequestDto {
   })
   limit: number
 }
+
+export class CreateCategoryRequestDto {
+  @ApiProperty({
+    name: 'parentId',
+    required: true,
+    type: String,
+  })
+  parentId: string
+
+  @ApiProperty({
+    name: 'en',
+    required: true,
+    type: String,
+  })
+  en: string
+
+  @ApiProperty({
+    name: 'th',
+    required: true,
+    type: String,
+  })
+  th: string
+
+  @ApiProperty({
+    name: 'status',
+    required: true,
+    type: String,
+  })
+  status: string
+
+  @ApiProperty({
+    name: 'group',
+    required: true,
+    type: String,
+  })
+  group: string
+}
