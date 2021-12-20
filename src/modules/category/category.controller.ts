@@ -32,6 +32,15 @@ import { GetCategoryListResponseDto } from './models/category.response'
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @ApiOperation({ summary: 'get token' })
+  @ApiDefaultSuccessResponse(200)
+  @ApiDefaultErrorResponse(401)
+  @Get('/v1/gettoken')
+  @UseGuards(JwtExtractorGuard)
+  async getToken() {
+    return this.categoryService.getToken()
+  }
+
   @ApiOperation({ summary: 'category list' })
   @ApiDefaultSuccessResponse(200, GetCategoryListResponseDto)
   @ApiDefaultErrorResponse()
