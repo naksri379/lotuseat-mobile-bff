@@ -1,11 +1,9 @@
 import { HttpService, Injectable } from '@nestjs/common'
 import { ExecuteTimeLog } from '../../middleware/decorator/executeTimeLog.decorator'
-import {
-  CreateCategoryRequestDto
-} from './models/category.request'
+import { CreateCategoryRequestDto } from './models/category.request'
 import {
   CreateCategoryResponseDto,
-  GetCategoryListResponseDto
+  GetCategoryListResponseDto,
 } from './models/category.response'
 
 const qs = require('querystring')
@@ -13,9 +11,7 @@ import CustomError from 'src/utilities/customError'
 
 @Injectable()
 export class CategoryService {
-  constructor(
-    private readonly httpService: HttpService,
-  ) {}
+  constructor(private readonly httpService: HttpService) {}
 
   @ExecuteTimeLog()
   async getCategoryList(): Promise<GetCategoryListResponseDto[]> {
@@ -150,5 +146,4 @@ export class CategoryService {
         )
     }
   }
-
 }
