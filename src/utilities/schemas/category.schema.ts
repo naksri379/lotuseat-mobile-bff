@@ -19,3 +19,26 @@ export const GET_CATEGORY_LIST_REQUEST_SCHEMA = Joi.object({
       'number.min': '{#key} must over {#limit}',
     }),
 }).unknown(true)
+
+export const CREATE_CATEGORY_REQUEST_SCHEMA = Joi.object({
+  en: Joi.string()
+    .required()
+    .messages({
+      'any.required': `{#key} ${IS_REQUIRED}`,
+    }),
+  th: Joi.string()
+    .required()
+    .messages({
+      'any.required': `{#key} ${IS_REQUIRED}`,
+    }),
+  status: Joi.string()
+    .required()
+    .messages({
+      'any.required': `{#key} ${IS_REQUIRED}`,
+    }),
+  group: Joi.string()
+    .required()
+    .messages({
+      'any.required': `{#key} ${IS_REQUIRED}`,
+    }),
+}).unknown(true)
